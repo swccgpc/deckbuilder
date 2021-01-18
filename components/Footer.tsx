@@ -17,13 +17,7 @@ const ConnectDiv = styled.div`
 export default function Footer() {
   return (
     <FooterContainer>
-      <ConnectDiv>Visit the main page: </ConnectDiv>
-      <a
-        href="https://www.starwarsccg.org/"
-        style={{ textDecoration: "underline", color: "white" }}
-      >
-        Starwarsccg.org
-      </a>
+      <a href="https://www.starwarsccg.org/" style={{ textDecoration: "underline", color: "white" }}>&copy;2021, Star Wars Players Committee. All Rights Reserved.</a>
     </FooterContainer>
   );
 }
