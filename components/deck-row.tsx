@@ -107,7 +107,7 @@ export function DeckRow({
   return (
     <DeckDiv key={deck.id} onClick={() => router.push(`/deck/${deck.id}`)}>
       <Image
-        src={deck.side === Side.Dark ? "/images/dark.png" : "/images/light.png"}
+        src={deck.side === Side.Dark ? "https://res.starwarsccg.org/deckdb/dark.png" : "https://res.starwarsccg.org/deckdb/light.png"}
       ></Image>
       <TitleAuthorContainer>
         <Title>{deck.title}</Title>

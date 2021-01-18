@@ -204,7 +204,7 @@ export function CardTypeSection({ deckCards }: { deckCards: DeckCard[] }) {
     <TypeContainer>
       <TypeTitle>
         <TypeImage
-          src={`/images/type_images/${getIconName(deckCards[0].card.type)}.png`}
+          src={`https://res.starwarsccg.org/deckdb/type_images/${getIconName(deckCards[0].card.type)}.png`}
         />{" "}
         <div style={{ marginLeft: "5px" }}>
           {deckCards[0].card.type} ({deckCards.length})
@@ -300,8 +300,8 @@ export default function Deck() {
               <FadedImage
                 imageUrl={
                   deckInfo.deck.side === Side.Dark
-                    ? "/images/dark.png"
-                    : "/images/light.png"
+                    ? "https://res.starwarsccg.org/deckdb/dark.png"
+                    : "https://res.starwarsccg.org/deckdb/light.png"
                 }
                 backgroundColor={headerBackgroundColor}
               />

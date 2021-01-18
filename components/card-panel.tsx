@@ -161,7 +161,7 @@ export function CardPanel({
               <div style={{ height: "3px" }}></div>
             )}
             <DeckBuilderHeader>
-              <img src="/images/dark.png" style={{ height: "50px" }}></img>
+              <img src="https://res.starwarsccg.org/deckdb/dark.png" style={{ height: "50px" }}></img>
 
               <DeckBuilderTitle>
                 <span

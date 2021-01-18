@@ -82,8 +82,8 @@ export default function Home() {
                     id={deck.id}
                     img={
                       deck.side === Side.Dark
-                        ? "/images/dark.png"
-                        : "/images/light.png"
+                        ? "https://res.starwarsccg.org/deckdb/dark.png"
+                        : "https://res.starwarsccg.org/deckdb/light.png"
                     }
                     title={deck.title}
                     createdAt={deck.createdAt}

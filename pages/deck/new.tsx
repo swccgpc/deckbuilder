@@ -49,7 +49,7 @@ export default function NewDeck() {
             }}
           >
             <DeckSideContainer onClick={() => setSide(Side.Dark)}>
-              <img src="/images/dark.png"></img>
+              <img src="https://res.starwarsccg.org/deckdb/dark.png"></img>
               <RadioContainer>
                 <Radio
                   checked={side === Side.Dark}
@@ -61,7 +61,7 @@ export default function NewDeck() {
               </RadioContainer>
             </DeckSideContainer>
             <DeckSideContainer onClick={() => setSide(Side.Light)}>
-              <img src="/images/light.png"></img>
+              <img src="https://res.starwarsccg.org/deckdb/light.png"></img>
               <RadioContainer>
                 <Radio
                   checked={side === Side.Light}
