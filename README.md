@@ -1,70 +1,109 @@
-## Running Locally
+SWCCG Deck Builder
+==================
 
-### Prerequisites
 
-#### 1. Node Version 14.5.0
+## Local Development
 
-```
-node --version
-// v12.9.1
-```
 
-#### 2. Install doppler
 
-You'll need the environment variables for Amazon Cognito. Doppler is a secret management service. Email danielrasmuson@gmail.com for access to the SWCCGDB vault.
+## Prerequisites
 
-https://docs.doppler.com/docs/enclave-installation
+* [NodeJS 12 LTS](https://nodejs.org/en/)
+* yarn
+* MySQL Server
 
-#### 3. Start an instance of MySQL locally
 
-A running mysql database
 
-Make a new database on the instance
+## Setup MySQL
 
-```
-mysql
-> CREATE DATABASE swccgdb;
+### Create Database
+
+```sql
+CREATE DATABASE swccgdb;
 ```
 
-next from the root of the project build the schema
+### Load the database schema
 
-```
-mysql --host=127.0.0.1 --port=3306 --user=root -p "swccgdb" < "sql/schema.sql"
-```
-
-next make a new file "prisma/.env"
-
-with the contents (assuming you used the above commands to setup your database)
-
-```
-DATABASE_URL="mysql://root:password@localhost:3306/swccgdb"
+```bash
+mysql --user=root -p swccgdb < sql/schema.sql
 ```
 
-### Setup commands
+### populate environment: `DATABASE_URL`
 
+* The SWCCGDB requires the `DATABASE_URL` environment variable.
+* The variable can be set via URI in the environment:
+```bash
+export DATABASE_URL="mysql://username:password@hostname:3306/swccgdb"
 ```
-npm i -g yarn // install yarn globally
-yarn // to install dependencies
-yarn run dev
+* Or the variable can be set in the **prisma env file**: `prisma/.env`
+```bash
+DATABASE_URL="mysql://username:password@hostname:3306/swccgdb"
 ```
 
-## After Updating the Database Schema Locally
+* In prouction, the `DATABASE_URL` is set in `next.config.js` from data retrieved from **Secrets Manager**.
 
+
+
+## Build code
+
+```bash
+##
+## use yarn to install dependencies
+##
+yarn
+npx next build
 ```
+
+
+
+## Start the  web server
+
+```bash
+npx next start
+```
+
+
+
+## [Prisma Database Access SDK for MySQL](https://www.prisma.io/docs/getting-started/setup-prisma/start-from-scratch-sql-typescript-mysql) is used for accessing the SWCCGDB Database in an ORM fashion.
+
+
+### Convert DB Schema in to a Prisma Data Model
+
+* After _introspecting_ the database, there will be a data model file `prisma/schema.prisma` which represents the current database schema.
+
+```bash
 npx prisma introspect
+```
+
+### Generate Prisma Client library
+
+* Read the Prisma schema and generate a Prisma Client library into `node_modules/@prisma/client`
+
+```bash
 npx prisma generate
 ```
 
-read more about this here: https://www.prisma.io/docs/getting-started/setup-prisma/start-from-scratch-sql-typescript-postgres
 
-## Deployment
 
-1. Make sure doppler cli is installed and logged in
+## User Authentication using Cognito
 
-2. Make sure elastic beanstalk cli is installed
+* With **Cognito User Pools**, you can easily and securely add sign-up and sign-in functionality to your mobile and web apps with a fully-managed service that scales to support hundreds of millions of users.
+* The Production **Cognito User Pool** is created through the **[SWCCG Infrastructure Terraform code](https://github.com/swccgpc/swccg-infrastructure)**.
+* Cognito client configuration is set using environment variables:
+  * `COGNITO_POOL_ID`
+  * `COGNITO_REGION`
+  * `JWT_SECRET`
 
-3. Run
 
+
+## Webserver Port
+
+* By default the app will run on port `3000`.
+* The webserver port can be customized by passing: `--port=8080` to the startup command:
+
+```bash
+npx next start --port=8080
 ```
-npm run deploy
-```
+
+
+
