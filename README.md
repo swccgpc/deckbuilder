@@ -1,11 +1,6 @@
 SWCCG Deck Builder
 ==================
 
-
-## Local Development
-
-
-
 ## Prerequisites
 
 * [NodeJS 12 LTS](https://nodejs.org/en/)
