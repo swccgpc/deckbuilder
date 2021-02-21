@@ -1,15 +1,14 @@
 {
-  "name": "my-app",
+  "name": "deckbuilder",
   "version": "0.1.0",
   "private": true,
   "engines": {
-    "node": "12.9.1"
+    "node": "12.20.1 || 12.x"
   },
   "scripts": {
-    "dev": "doppler run --project swccgdb --config dev -- npx next dev",
+    "dev": "npx next dev",
     "build": "npx next build",
-    "start": "npx next start --port=8080",
-    "deploy": "bash deploy.sh",
+    "start": "npx next start",
     "generate": "graphql-codegen --config codegen.yml",
     "dummy-data": "npx tsc ./scripts/create-dummy-data.ts; node ./scripts/create-dummy-data.js"
   },
@@ -29,15 +28,18 @@
     "jwk-to-pem": "^2.0.4",
     "moment": "^2.27.0",
     "next": "^9.4.4",
-    "react": "16.13.1",
+    "nextjs-serverless-lambda-handler": "^0.1.2",
+    "react": "^16.13.1",
     "react-click-away-listener": "^1.2.0",
     "react-dom": "16.13.1",
     "react-moment": "^0.9.7",
     "react-sticky": "^6.0.3",
     "remark": "^12.0.0",
     "remark-html": "^11.0.1",
+    "serverless-next.js": "^1.15.0-alpha.2",
     "stars-rating": "^1.1.0",
-    "styled-components": "^5.1.1"
+    "styled-components": "^5.1.1",
+    "yarn": "^1.22.10"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "1.17.3",

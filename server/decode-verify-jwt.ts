@@ -50,6 +50,10 @@ interface Claim {
 
 const cognitoPoolId = process.env.COGNITO_POOL_ID;
 const cognitoRegion = process.env.COGNITO_REGION;
+
+// const cognitoPoolId = module.exports.serverRuntimeConfig.COGNITO_POOL_ID; //process.env.COGNITO_POOL_ID;
+// const cognitoRegion = module.exports.serverRuntimeConfig.COGNITO_REGION;  //process.env.COGNITO_REGION;
+
 if (!cognitoPoolId) {
   throw new Error("env var required for cognito pool");
 }

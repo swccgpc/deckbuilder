@@ -85,9 +85,9 @@ export function Toolbar() {
         <Link href="/" passHref>
           <ToolbarLink>
             {" "}
-            <img style="width:75px; height:50px;"
+            <img style={{width:"75px", height: "50px"}}
                  src="https://res.starwarsccg.org/swccgpc_deckdb2.svg"
-                 onerror="this.onerror=null; this.src='https://res.starwarsccg.org/swccgpc_deckdb2.png'" />
+                 onError={(e)=>{(e.target as any).onerror = null; (e.target as any).src="https://res.starwarsccg.org/swccgpc_deckdb2.png"}} />
           </ToolbarLink>
         </Link>
         <Link href="/my-decks" passHref>

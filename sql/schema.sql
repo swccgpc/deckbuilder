@@ -1,5 +1,3 @@
-create database swccgdb;
-use swccgdb;
 CREATE TABLE User (
   id int auto_increment not null primary key,
   created_at TIMESTAMP NOT NULL DEFAULT NOW(),

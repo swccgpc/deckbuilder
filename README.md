@@ -14,25 +14,25 @@ SWCCG Deck Builder
 ### Create Database
 
 ```sql
-CREATE DATABASE swccgdb;
+CREATE DATABASE deckbuilder;
 ```
 
 ### Load the database schema
 
 ```bash
-mysql --user=root -p swccgdb < sql/schema.sql
+mysql --user=root -p deckbuilder < sql/schema.sql
 ```
 
 ### populate environment: `DATABASE_URL`
 
-* The SWCCGDB requires the `DATABASE_URL` environment variable.
+* The deckbuilder requires the `DATABASE_URL` environment variable.
 * The variable can be set via URI in the environment:
 ```bash
-export DATABASE_URL="mysql://username:password@hostname:3306/swccgdb"
+export DATABASE_URL="mysql://username:password@hostname:3306/deckbuilder"
 ```
 * Or the variable can be set in the **prisma env file**: `prisma/.env`
 ```bash
-DATABASE_URL="mysql://username:password@hostname:3306/swccgdb"
+DATABASE_URL="mysql://username:password@hostname:3306/deckbuilder"
 ```
 
 * In prouction, the `DATABASE_URL` is set in `next.config.js` from data retrieved from **Secrets Manager**.
@@ -59,7 +59,7 @@ npx next start
 
 
 
-## [Prisma Database Access SDK for MySQL](https://www.prisma.io/docs/getting-started/setup-prisma/start-from-scratch-sql-typescript-mysql) is used for accessing the SWCCGDB Database in an ORM fashion.
+## [Prisma Database Access SDK for MySQL](https://www.prisma.io/docs/getting-started/setup-prisma/start-from-scratch-sql-typescript-mysql) is used for accessing the deckbuilder Database in an ORM fashion.
 
 
 ### Convert DB Schema in to a Prisma Data Model

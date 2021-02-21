@@ -42,3 +42,7 @@ scripts/*.js
 !.elasticbeanstalk/*.global.yml
 
 .ebextensions/environment.config
+
+
+
+next.config.original.1610849665162.js

@@ -29,7 +29,8 @@ function getEnvironment(): Environment {
   }
 }
 export function getSignInUrl() {
-  return module.exports.serverRuntimeConfig.COGNITO_LOGON_URL;
+  // return process.env.COGNITO_LOGON_URL; // module.exports.serverRuntimeConfig.COGNITO_LOGON_URL;
+  return "https://auth.starwarsccg.org/login?client_id=32e1lt12beauu6clc11k2bn3ks&response_type=token&scope=email+openid+profile&redirect_uri=https://deckdb.starwarsccg.org/callback";
 }
 export function getUserId() {
   const token = getToken();

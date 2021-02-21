@@ -1,2 +1,55 @@
-myNextApplication:
-  component: "@sls-next/serverless-component@1.16.0" # it is recommended you pin the latest stable version of serverless-next.js
+---
+
+#service: deckbuilder
+#provider:
+#  name: aws
+#  region: us-east-2
+#  profile: swccg-production
+#  runtime: nodejs12.x
+#  memorySize: 1024 # optional, in MB, default is 1024
+#  timeout: 27 # api gateway times out at 29 seconds, so wait up to as long as possible
+#  environment:
+#    #NODER_ENV: ${opt:stage, 'production'}
+#    NODE_ENV: production
+#  exclude:
+#    - .git/**
+#    - .gitignore
+#    - .DS_Store
+#    - npm-debug.log
+#    - .serverless/**
+#    - .serverless_plugins/**
+
+
+# functions:
+#   ssr:
+#     handler: lambda.handler
+#     events:
+#       - http:
+#           method: GET
+#           path: '/'
+#           cors: true
+#       - http:
+#           method: GET
+#           path: '/{any+}'
+#           cors: true
+
+
+deckdb:
+  component: "@sls-next/serverless-component@1.18.0"
+  #component: "./node_modules/serverless-next.js"
+
+  #inputs:
+  #  #cloudfront:
+  #  #  #distributionId: ${distribution}
+  #  #  priceClass: 'PriceClass_100'
+  #  #  aliases: ['deckdb.starwarsccg.org']
+  #  #bucketName: 'deckdb-res.starwarsccg.org'
+  #  #bucketRegion: 'us-east-1'
+  #  #description: 'deckdb'
+  #  name:
+  #    defaultLambda: deckdb-default
+  #    apiLambda: deckdb-api
+  #  runtime:
+  #    defaultLambda: 'nodejs12.x'
+  #    apiLambda: 'nodejs12.x'
+
