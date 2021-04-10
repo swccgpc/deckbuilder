@@ -1,7 +1,7 @@
 import { ApolloServer, gql } from "apollo-server-micro";
 import schema from "raw-loader!../../graphql/schema.gql";
 import { PrismaClient } from "@prisma/client";
-import { recentDecks } from "../../server/resolvers/recent-decks";
+import { allCards, recentDecks } from "../../server/resolvers/recent-decks";
 import jwt from "jsonwebtoken";
 import { addCardToDeck } from "../../server/resolvers/mutation/add-card-to-deck";
 import { CardResolver } from "../../server/resolvers/Card";
@@ -45,9 +45,10 @@ const resolvers = {
         },
       });
     },
-    cards: async () => {
-      return (await prisma.card.findMany()).sort(sortCardsByName);
-    },
+    // cards: async () => {
+    //   return (await prisma.card.findMany()).sort(sortCardsByName);
+    // },
+    cards: () => allCards(),
     deck: (_parent, _args) => {
       return prisma.deck.findOne({
         where: { id: parseInt(_args.id) },
