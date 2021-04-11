@@ -16,10 +16,10 @@ export async function allCards() {
   const db = new AWS.DynamoDB()
   const payload = {
     TableName: process.env.DECKS_TABLE_NAME,
-    ProjectionExpression: "Cards",
+    ProjectionExpression: "cards",
   };
   const { Items } = await db.scan(payload).promise();    
-  return deserialize(Items);
+  return deserializeCards(Items);
 }
 
 export async function getFromDb() {
@@ -32,10 +32,26 @@ export async function getFromDb() {
   return deserialize(Items);
 }
 
+function deserializeCards(items) {
+  if (items) {
+    let cards = [];
+    items.map((item) => {
+      if (item.cards) {
+        const c = JSON.parse(item.cards);
+        cards = cards.concat(c);
+      }
+    });
+
+    return cards;
+  }
+
+  return null;
+}
+
 function deserialize(items) {
   if (items) {
       return items.map((item) => ({
-          id: item.asset_id?.N,
+          id: item.id?.S,
           side: item.side?.S,
           title: item.title?.S,
       }));

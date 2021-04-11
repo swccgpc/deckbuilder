@@ -14,27 +14,39 @@ export function decks(
   _context: Context
 ) {
   if (_args.authorId) {
-    console.log(_context.userId);
     if (parseInt(_args.authorId) !== _context.userId) {
       throw new Error("You can only query for your own decks");
     } else {
       if (_args.authorId) {
-        return prisma.deck.findMany({
-          orderBy: {
-            updated_at: "desc",
+        return getFromDb({
+          IndexName: "userId-updatedAt-index",
+          ExpressionAttributeNames: {
+              "#kid": "userId"
           },
-          where: {
-            deleted: false,
-            User: {
-              id: parseInt(_args.authorId),
-            },
+          ExpressionAttributeValues: {
+              ':uid': {N: _args.authorId},
+              ':del': {N: '0'},
           },
-        });
+          FilterExpression : 'deleted = :del',
+          KeyConditionExpression: '#kid = :uid',
+          ScanIndexForward: false
+        });      
       }
     }
   }
 
-  return getFromDb();
+  return getFromDb({
+    TableName: process.env.DECKS_TABLE_NAME,
+    IndexName: "deleted-updatedAt-index",
+    ExpressionAttributeNames: {
+        "#kid": "deleted"
+    },
+    ExpressionAttributeValues: {
+        ':del': {N: '0'},
+    },
+    KeyConditionExpression: '#kid = :del',
+    ScanIndexForward: false
+  });
   // return prisma.deck.findMany({
   //   orderBy: {
   //     updated_at: "desc",
@@ -46,21 +58,13 @@ export function decks(
   // });
 }
 
-export async function getFromDb() {
-  const deleted  = '0';
+export async function getFromDb(params: any) {
   const db = new AWS.DynamoDB()
   const payload = {
     TableName: process.env.DECKS_TABLE_NAME,
-    IndexName: "deleted-updatedAt-index",
-    ExpressionAttributeNames: {
-        "#kid": "deleted"
-    },
-    ExpressionAttributeValues: {
-        ':del': {N: deleted},
-    },
-    KeyConditionExpression: '#kid = :del',
-    ScanIndexForward: false
   };
+  Object.assign(payload, params);
+
   const { Items } = await db.query(payload).promise();    
   return deserialize(Items);
 }
