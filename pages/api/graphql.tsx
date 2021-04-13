@@ -11,7 +11,7 @@ import { setStartingCard } from "../../server/resolvers/mutation/set-starting-ca
 import { updateDeck } from "../../server/resolvers/mutation/update-deck";
 import { deleteDeck } from "../../server/resolvers/mutation/delete-deck";
 import { login } from "../../server/resolvers/mutation/login";
-import { decks } from "../../server/resolvers/query/decks";
+import { deck, decks } from "../../server/resolvers/query/decks";
 import { createDeckRating } from "../../server/resolvers/mutation/create-deck-rating";
 import { Deck } from "../../server/resolvers/types/Deck";
 import { createComment } from "../../server/resolvers/mutation/create-comment";
@@ -49,11 +49,12 @@ const resolvers = {
     //   return (await prisma.card.findMany()).sort(sortCardsByName);
     // },
     cards: () => allCards(),
-    deck: (_parent, _args) => {
-      return prisma.deck.findOne({
-        where: { id: parseInt(_args.id) },
-      });
-    },
+    deck,
+    // deck: deck, (_parent, _args) => {
+    //   return prisma.deck.findOne({
+    //     where: { id: parseInt(_args.id) },
+    //   });
+    // },
     decks,
   },
   Mutation: {
@@ -90,7 +91,7 @@ const apolloServer = new ApolloServer({
   resolvers,
   context: ({ req }) => {
     try {
-      return { userId: 1234 };
+      return { userId: '1234' };
       const token = req.headers.authorization.split(" ")[1];
       const decoded = jwt.verify(token, process.env.JWT_SECRET) as {
         userId: string;

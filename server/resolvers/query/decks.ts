@@ -3,10 +3,36 @@ import {
   ResolversParentTypes,
   RequireFields,
   QueryDecksArgs,
+  QueryDeckArgs,
 } from "../../../graphql/types";
 import { Context } from "@apollo/client";
 import AWS from "aws-sdk";
 
+export async function deck(
+  _parent: ResolversParentTypes,
+  _args: RequireFields<QueryDeckArgs, "id">,
+) {
+  if (_args.id) {
+    return await getDeckFromDb(_args.id);
+  } else {
+    return null;
+  }
+}
+
+export async function getDeckFromDb(deckId: string) {
+  const db = new AWS.DynamoDB()
+  const payload = {
+    TableName: process.env.DECKS_TABLE_NAME,
+    Key: {
+      'id': {S: deckId}
+    },
+  };
+
+  const { Item } = await db.getItem(payload).promise();
+  const desItem = deserializeItem(Item);
+
+  return desItem;
+}
 
 export function decks(
   _parent: ResolversParentTypes,
@@ -14,14 +40,14 @@ export function decks(
   _context: Context
 ) {
   if (_args.authorId) {
-    if (parseInt(_args.authorId) !== _context.userId) {
+    if (_args.authorId !== _context.userId) {
       throw new Error("You can only query for your own decks");
     } else {
       if (_args.authorId) {
         return getFromDb({
-          IndexName: "userId-updatedAt-index",
+          IndexName: "authorId-updated_at-index",
           ExpressionAttributeNames: {
-              "#kid": "userId"
+              "#kid": "authorId"
           },
           ExpressionAttributeValues: {
               ':uid': {N: _args.authorId},
@@ -37,7 +63,7 @@ export function decks(
 
   return getFromDb({
     TableName: process.env.DECKS_TABLE_NAME,
-    IndexName: "deleted-updatedAt-index",
+    IndexName: "deleted-updated_at-index",
     ExpressionAttributeNames: {
         "#kid": "deleted"
     },
@@ -71,12 +97,22 @@ export async function getFromDb(params: any) {
 
 function deserialize(items) {
   if (items) {
-      return items.map((item) => ({
-          id: item.asset_id?.N,
-          side: item.side?.S,
-          title: item.title?.S,
-      }));
+      return items.map((item) =>  deserializeItem(item));
   }
 
   return null;
+}
+
+export function deserializeItem(item) {
+  return item ? {
+    id: item.id?.S,
+    side: item.side?.S,
+    title: item.title?.S,
+    description: item.description?.S,
+    created_at: item.created_at?.S,
+    updated_at: item.updated_at?.S,
+    authorId: item.authorId?.N,
+    author: item.author?.S,
+    published: item.published?.BOOL || false
+  } : null;
 }

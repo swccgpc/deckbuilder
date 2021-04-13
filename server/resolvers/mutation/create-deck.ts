@@ -1,21 +1,23 @@
 import { prisma } from "../../../pages/api/graphql";
-const AWS = require("aws-sdk");
-const DUE = require("dynamodb-update-expression");
+import AWS from "aws-sdk";
+import DUE from "dynamodb-update-expression";
 
 export async function createDeck(_parent, _args, _context) {
   if (!_context.userId) {
     throw new Error("Please login");
   }
 
-  const did = new Date().getTime();
+  const cd = new Date();
+  const did = cd.getTime();
   const updateExpression = DUE.getUpdateExpression(
     {
       id: `${did}`,
     },
     {
       deleted: 0,
-      userId: _context.userId,
-      updatedAt: new Date().toISOString(),
+      authorId: _context.userId,
+      created_at: cd.toISOString(),
+      updated_at: cd.toISOString(),
       side: _args.side,
     }
   );
@@ -27,5 +29,7 @@ export async function createDeck(_parent, _args, _context) {
   };
 
   const db = new AWS.DynamoDB.DocumentClient();
-  return db.update(payload).promise().then(() => ({ id: did, side: _args.side }));
+  await db.update(payload).promise();
+  
+  return { id: did, side: _args.side };
 }

@@ -1,4 +1,5 @@
 import { PrismaClient } from "@prisma/client";
+import { deserializeItem } from './query/decks';
 import AWS from "aws-sdk";
 
 export async function recentDecks(prisma: PrismaClient) {
@@ -50,11 +51,7 @@ function deserializeCards(items) {
 
 function deserialize(items) {
   if (items) {
-      return items.map((item) => ({
-          id: item.id?.S,
-          side: item.side?.S,
-          title: item.title?.S,
-      }));
+      return items.map((item) => deserializeItem(item));
   }
 
   return null;
