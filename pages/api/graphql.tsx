@@ -1,7 +1,8 @@
 import { ApolloServer, gql } from "apollo-server-micro";
 import schema from "raw-loader!../../graphql/schema.gql";
 import { PrismaClient } from "@prisma/client";
-import { allCards, recentDecks } from "../../server/resolvers/recent-decks";
+import { recentDecks } from "../../server/resolvers/recent-decks";
+import { allCards, singleCard } from "../../server/resolvers/query/cards";
 import jwt from "jsonwebtoken";
 import { addCardToDeck } from "../../server/resolvers/mutation/add-card-to-deck";
 import { CardResolver } from "../../server/resolvers/Card";
@@ -15,7 +16,7 @@ import { deck, decks } from "../../server/resolvers/query/decks";
 import { createDeckRating } from "../../server/resolvers/mutation/create-deck-rating";
 import { Deck } from "../../server/resolvers/types/Deck";
 import { createComment } from "../../server/resolvers/mutation/create-comment";
-import { Comment } from "../../server/resolvers/query/Comment";
+import { Comment } from "../../server/resolvers/types/Comment";
 
 export const prisma = new PrismaClient();
 
@@ -38,13 +39,7 @@ const resolvers = {
   Query: {
     hello: (_parent, _args, _context) => "Hello!",
     recentDecks: () => recentDecks(prisma),
-    card: (_parent, _args) => {
-      return prisma.card.findOne({
-        where: {
-          id: parseInt(_args.id),
-        },
-      });
-    },
+    card: (_parent, _args) => singleCard(_parent, _args),
     // cards: async () => {
     //   return (await prisma.card.findMany()).sort(sortCardsByName);
     // },

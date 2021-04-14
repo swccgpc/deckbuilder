@@ -1,14 +1,10 @@
 import { prisma } from "../../../pages/api/graphql";
+import { singleCardById } from '../query/cards';
+
 export const Comment = {
   createdAt: (_parent) => _parent.created_at,
   updatedAt: (_parent) => _parent.updated_at,
-  author: (_parent) => {
-    return prisma.user.findOne({
-      where: {
-        id: _parent.authorId,
-      },
-    });
-  },
+  author: (_parent) => _parent.author,
   deck: (_parent) => {
     if (!_parent.deckId) {
       return null;
@@ -23,10 +19,6 @@ export const Comment = {
     if (!_parent.cardId) {
       return null;
     }
-    return prisma.card.findOne({
-      where: {
-        id: _parent.cardId,
-      },
-    });
+    return singleCardById(_parent.cardId);
   },
 };

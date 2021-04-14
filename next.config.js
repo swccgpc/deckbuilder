@@ -17,6 +17,7 @@ process.env.COGNITO_LOGON_URL=COGNITO_LOGON_URL
 process.env.JWT_SECRET=JWT_SECRET
 process.env.DATABASE_URL = DATABASE_URL
 process.env.DECKS_TABLE_NAME='Decks'
+process.env.CARD_COMMENTS_TABLE_NAME='CardComments'
 
 AWS.config.update({region: aws_region });
 

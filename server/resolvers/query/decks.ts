@@ -62,7 +62,6 @@ export function decks(
   }
 
   return getFromDb({
-    TableName: process.env.DECKS_TABLE_NAME,
     IndexName: "deleted-updated_at-index",
     ExpressionAttributeNames: {
         "#kid": "deleted"

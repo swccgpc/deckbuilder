@@ -1,6 +1,34 @@
-import { prisma } from "../../../pages/api/graphql";
+import AWS from "aws-sdk";
 
-export function createComment(_parent, _args, _context) {
+export async function addCardComment(cardId: number, comment: string, userId: string) {
+  const cd = new Date().toISOString();
+  const item = {
+    cardId,
+    created_at: cd,
+    comment: comment,
+    updated_at: cd,
+    authorId: userId
+  };
+
+  const payload = {
+    TableName: process.env.CARD_COMMENTS_TABLE_NAME,
+    Item: item,
+  };
+
+  const db = new AWS.DynamoDB.DocumentClient();
+  await db.put(payload).promise();
+
+  return {
+    id: cd,
+    created_at: cd,
+    updated_at: cd,
+    author: { id: userId, username: 'Good' },
+    comment,
+    cardId
+  };
+}
+
+export async function createComment(_parent, _args, _context) {
   if (!_context.userId) {
     throw new Error("Please signin");
   }
@@ -11,29 +39,9 @@ export function createComment(_parent, _args, _context) {
     throw new Error("Only deckId or cardId can be provided for a comment");
   }
 
-  return prisma.comment.create({
-    data: {
-      User: {
-        connect: {
-          id: _context.userId,
-        },
-      },
-      ...(_args.deckId
-        ? {
-            Deck: {
-              connect: {
-                id: parseInt(_args.deckId),
-              },
-            },
-          }
-        : {
-            Card: {
-              connect: {
-                id: parseInt(_args.cardId),
-              },
-            },
-          }),
-      comment: _args.comment,
-    },
-  });
+  if (_args.cardId) {
+    return await addCardComment(parseInt(_args.cardId), _args.comment, _context.userId);
+  } else {
+    throw new Error('Not implemented');
+  }
 }
