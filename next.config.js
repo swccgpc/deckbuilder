@@ -4,7 +4,7 @@
 var aws_region        = process.env.AWS_DEFULT_REGION || 'us-east-2'
 var AWS               = require('aws-sdk')
 var secretsManager    = new AWS.SecretsManager({region: aws_region})
-var DATABASE_URL      = process.env.DATABASE_URL      || "mysql://tester:testpass@nhc-db.cojxm3unmbon.us-east-1.rds.amazonaws.com:3306/testing"
+var DATABASE_URL      = process.env.DATABASE_URL      || "mysql://root@localhost:3306/deckbuilder"
 
 var COGNITO_POOL_ID   = process.env.COGNITO_POOL_ID   || "us-east-2_W8Y749Lm8"
 var COGNITO_REGION    = process.env.COGNITO_REGION    || "us-east-2"
