@@ -112,6 +112,7 @@ export function deserializeItem(item) {
     updated_at: item.updated_at?.S,
     authorId: item.authorId?.N,
     author: item.author?.S,
-    published: item.published?.BOOL || false
+    published: item.published?.BOOL || false,
+    cards: item.cards ? JSON.parse(item.cards?.S) : [],
   } : null;
 }

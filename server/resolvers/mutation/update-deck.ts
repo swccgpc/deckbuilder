@@ -21,26 +21,12 @@ export async function updateDeck(
     throw new Error("This deck doesn't belong to you.");
   }
 
-  const updateExpression = DUE.getUpdateExpression(
-    {
-      id: _args.deckId,
-    },
-    {
-      title: _args.updates.title,
-      description: _args.updates.description,
-      published: _args.updates.published || deck.published,
-      updated_at: new Date().toISOString(),
-    }
-  );
-
-  const payload = {
-    TableName: process.env.DECKS_TABLE_NAME,
-    Key: { id: _args.deckId },
-    ...updateExpression,
-  };
-
-  const db = new AWS.DynamoDB.DocumentClient();
-  await db.update(payload).promise();
+  await updateDeckItem(_args.deckId, {
+    title: _args.updates.title,
+    description: _args.updates.description,
+    published: _args.updates.published || deck.published,
+    updated_at: new Date().toISOString(),
+  });
 
   return {
     id: _args.deckId,
@@ -48,4 +34,22 @@ export async function updateDeck(
     description: _args.updates.description,
     published: _args.updates.published || deck.published,
   };
+}
+
+export async function updateDeckItem(deckId: string, update: any) {
+  const updateExpression = DUE.getUpdateExpression(
+    {
+      id: deckId,
+    },
+    update
+  );
+
+  const payload = {
+    TableName: process.env.DECKS_TABLE_NAME,
+    Key: { id: deckId },
+    ...updateExpression,
+  };
+
+  const db = new AWS.DynamoDB.DocumentClient();
+  await db.update(payload).promise();
 }
