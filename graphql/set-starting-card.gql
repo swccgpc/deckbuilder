@@ -1,5 +1,5 @@
-mutation SetStartingCard($deckCardId: ID!, $isStartingCard: Boolean!) {
-  setStartingCard(deckCardId: $deckCardId, isStartingCard: $isStartingCard) {
+mutation SetStartingCard($deckId: String!, $deckCardId: ID!, $isStartingCard: Boolean!) {
+  setStartingCard(deckId: $deckId, deckCardId: $deckCardId, isStartingCard: $isStartingCard) {
     id
     isStartingCard
   }

@@ -230,6 +230,7 @@ export function CardPanel({
                           }
                           setStartingCard({
                             variables: {
+                              deckId: deck.id,
                               deckCardId: deckCard.id,
                               isStartingCard: !Boolean(deckCard.isStartingCard),
                             },

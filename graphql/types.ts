@@ -96,6 +96,7 @@ export type MutationRemoveCardFromDeckArgs = {
 
 
 export type MutationSetStartingCardArgs = {
+  deckId: Scalars['String'];
   deckCardId: Scalars['ID'];
   isStartingCard: Scalars['Boolean'];
 };
@@ -447,6 +448,7 @@ export type RemoveCardFromDeckMutation = (
 );
 
 export type SetStartingCardMutationVariables = Exact<{
+  deckId: Scalars['String'];
   deckCardId: Scalars['ID'];
   isStartingCard: Scalars['Boolean'];
 }>;
@@ -628,7 +630,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   login?: Resolver<ResolversTypes['LoginResponse'], ParentType, ContextType, RequireFields<MutationLoginArgs, 'awsJWTToken'>>;
   addCardToDeck?: Resolver<ResolversTypes['DeckCardIDResponse'], ParentType, ContextType, RequireFields<MutationAddCardToDeckArgs, 'deckId' | 'cardId'>>;
   removeCardFromDeck?: Resolver<ResolversTypes['SuccessResponse'], ParentType, ContextType, RequireFields<MutationRemoveCardFromDeckArgs, 'deckCardId'>>;
-  setStartingCard?: Resolver<ResolversTypes['DeckCard'], ParentType, ContextType, RequireFields<MutationSetStartingCardArgs, 'deckCardId' | 'isStartingCard'>>;
+  setStartingCard?: Resolver<ResolversTypes['DeckCard'], ParentType, ContextType, RequireFields<MutationSetStartingCardArgs, 'deckId' | 'deckCardId' | 'isStartingCard'>>;
   updateDeck?: Resolver<ResolversTypes['Deck'], ParentType, ContextType, RequireFields<MutationUpdateDeckArgs, 'deckId' | 'updates'>>;
   createDeckRating?: Resolver<ResolversTypes['DeckRating'], ParentType, ContextType, RequireFields<MutationCreateDeckRatingArgs, 'deckId' | 'rating'>>;
   createComment?: Resolver<ResolversTypes['Comment'], ParentType, ContextType, RequireFields<MutationCreateCommentArgs, 'comment'>>;
