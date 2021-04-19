@@ -5,6 +5,7 @@ import { recentDecks } from "../../server/resolvers/recent-decks";
 import { allCards, singleCard } from "../../server/resolvers/query/cards";
 import jwt from "jsonwebtoken";
 import { addCardToDeck } from "../../server/resolvers/mutation/add-card-to-deck";
+import { removeCardFromDeck } from "../../server/resolvers/mutation/remove-card-from-deck";
 import { CardResolver } from "../../server/resolvers/Card";
 import { createDeck } from "../../server/resolvers/mutation/create-deck";
 import { DeckCard } from "../../server/resolvers/DeckCard";
@@ -38,13 +39,13 @@ function sortCardsByName(a: any, b: any) {
 const resolvers = {
   Query: {
     hello: (_parent, _args, _context) => "Hello!",
-    recentDecks: () => recentDecks(prisma),
-    card: (_parent, _args) => singleCard(_parent, _args),
+    recentDecks: () => recentDecks(prisma), // done
+    card: (_parent, _args) => singleCard(_parent, _args), // done
     // cards: async () => {
     //   return (await prisma.card.findMany()).sort(sortCardsByName);
     // },
-    cards: () => allCards(),
-    deck,
+    cards: () => allCards(), // done
+    deck, // done
     // deck: deck, (_parent, _args) => {
     //   return prisma.deck.findOne({
     //     where: { id: parseInt(_args.id) },
@@ -54,26 +55,27 @@ const resolvers = {
   },
   Mutation: {
     login,
-    updateDeck,
+    updateDeck, // done
     deleteDeck,
-    setStartingCard,
-    createDeck,
+    setStartingCard, // done
+    createDeck, // done
     createDeckRating,
     createComment,
-    addCardToDeck,
-    removeCardFromDeck: async (_parent, _args, _context) => {
-      if (!_context.userId) {
-        throw new Error("Please login");
-      }
-      await prisma.deckCard.delete({
-        where: {
-          id: parseInt(_args.deckCardId),
-        },
-      });
-      return {
-        success: true,
-      };
-    },
+    addCardToDeck, // done
+    removeCardFromDeck, // done
+    // removeCardFromDeck: async (_parent, _args, _context) => {
+    //   if (!_context.userId) {
+    //     throw new Error("Please login");
+    //   }
+    //   await prisma.deckCard.delete({
+    //     where: {
+    //       id: parseInt(_args.deckCardId),
+    //     },
+    //   });
+    //   return {
+    //     success: true,
+    //   };
+    // },
   },
   Card: CardResolver,
   Comment,

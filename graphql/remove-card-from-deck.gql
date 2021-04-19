@@ -1,5 +1,5 @@
-mutation RemoveCardFromDeck($deckCardId: ID!) {
-  removeCardFromDeck(deckCardId: $deckCardId) {
+mutation RemoveCardFromDeck($deckId: String!, $deckCardId: ID!) {
+  removeCardFromDeck(deckId: $deckId, deckCardId: $deckCardId) {
     success
   }
 }

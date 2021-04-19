@@ -25,7 +25,7 @@ type Mutation {
   createDeck(side: Side!): Deck!
   login(awsJWTToken: String!): LoginResponse!
   addCardToDeck(deckId: ID!, cardId: ID!): DeckCardIDResponse!
-  removeCardFromDeck(deckCardId: ID!): SuccessResponse!
+  removeCardFromDeck(deckId: String!, deckCardId: ID!): SuccessResponse!
   setStartingCard(deckId: String!, deckCardId: ID!, isStartingCard: Boolean!): DeckCard!
   updateDeck(deckId: ID!, updates: DeckUpdate!): Deck!
   createDeckRating(deckId: ID!, rating: Float!): DeckRating!
