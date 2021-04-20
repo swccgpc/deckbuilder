@@ -13,13 +13,13 @@ export async function deck(
   _args: RequireFields<QueryDeckArgs, "id">,
 ) {
   if (_args.id) {
-    return await getDeckFromDb(_args.id);
+    return await getDeckFromDb(_args.id, true);
   } else {
     return null;
   }
 }
 
-export async function getDeckFromDb(deckId: string) {
+export async function getDeckFromDb(deckId: string, getRatings: boolean = false) {
   const db = new AWS.DynamoDB()
   const payload = {
     TableName: process.env.DECKS_TABLE_NAME,
@@ -28,10 +28,44 @@ export async function getDeckFromDb(deckId: string) {
     },
   };
 
-  const { Item } = await db.getItem(payload).promise();
-  const desItem = deserializeItem(Item);
+  const deckItemTask = db.getItem(payload).promise();
+  let ratings = [];
+  if (getRatings) {
+    const ratingTask = getRatingsFromDb(deckId);
+    await Promise.all([deckItemTask, ratingTask]);
+    ratings = await ratingTask;
+  } else {
+    await deckItemTask;
+  }
+  const { Item } = await deckItemTask;
+  const desItem = deserializeItem(Item, ratings);
 
   return desItem;
+}
+
+export async function getRatingsFromDb(deckId: string) {
+  const db = new AWS.DynamoDB()
+  const payload = {
+    TableName: process.env.DECK_RATINGS_TABLE_NAME,
+    ExpressionAttributeNames: {
+      "#did": "deckId"
+    },
+    ExpressionAttributeValues: {
+        ':deck': {S: deckId},
+    },
+    KeyConditionExpression: '#did = :deck',
+    ConsistentRead: true,
+  };
+
+  const { Items } = await db.query(payload).promise();
+  if (Items) {
+    return Items.map((item) => ({
+      id: item.updated_at.S,
+      rating: item.rating.N,
+    }));
+  }
+
+  return [];
 }
 
 export function decks(
@@ -102,7 +136,7 @@ function deserialize(items) {
   return null;
 }
 
-export function deserializeItem(item) {
+export function deserializeItem(item, ratings: any[] = []) {
   return item ? {
     id: item.id?.S,
     side: item.side?.S,
@@ -114,5 +148,6 @@ export function deserializeItem(item) {
     author: item.author?.S,
     published: item.published?.BOOL || false,
     cards: item.cards ? JSON.parse(item.cards?.S) : [],
+    ratings,
   } : null;
 }

@@ -1,5 +1,6 @@
 import { prisma } from "../../../pages/api/graphql";
 import { singleCardById } from '../query/cards';
+import { getDeckCommentsFromDb } from '../query/comments';
 
 export const Deck = {
   createdAt: (_parent) => _parent.created_at,
@@ -15,7 +16,9 @@ export const Deck = {
       return o;
     });
   },
-  comments: (_parent) => _parent.comments || [],
+  comments: async (_parent, _context) => {
+    return await getDeckCommentsFromDb(_parent.id);
+  },
   // {
   //   return prisma.comment.findMany({
   //     orderBy: {

@@ -1,5 +1,5 @@
 import { prisma } from "../../../pages/api/graphql";
-import { getDeckFromDb } from '../query/decks';
+import { getDeckFromDb, getRatingsFromDb } from '../query/decks';
 import AWS from "aws-sdk";
 import DUE from "dynamodb-update-expression";
 
@@ -11,7 +11,7 @@ export async function createDeckRating(_parent, _args, _context) {
     throw new Error("Only ratings between 1 and 5 are allowed");
   }
 
-  const deck = await getDeckFromDb(_args.deckId);
+  const deck = await getDeckFromDb(_args.deckId, false);
   if (!deck) {
     throw new Error(`deck not found: ${_args.deckId}`);
   }
@@ -42,6 +42,9 @@ export async function createDeckRating(_parent, _args, _context) {
 
   const db = new AWS.DynamoDB.DocumentClient();
   await db.update(payload).promise();
+
+  const ratings = await getRatingsFromDb(_args.deckId);
+  deck.ratings = ratings;
 
   return {
     id: cd.getTime(),

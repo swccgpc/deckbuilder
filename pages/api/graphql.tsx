@@ -59,8 +59,8 @@ const resolvers = {
     deleteDeck,
     setStartingCard, // done
     createDeck, // done
-    createDeckRating,
-    createComment,
+    createDeckRating, // done
+    createComment, // done
     addCardToDeck, // done
     removeCardFromDeck, // done
     // removeCardFromDeck: async (_parent, _args, _context) => {

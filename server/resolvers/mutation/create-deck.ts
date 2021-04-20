@@ -9,16 +9,19 @@ export async function createDeck(_parent, _args, _context) {
 
   const cd = new Date();
   const did = cd.getTime();
+  const author = JSON.stringify({ id: parseInt(_context.userId), username: "Good" });
   const updateExpression = DUE.getUpdateExpression(
     {
       id: `${did}`,
     },
     {
       deleted: 0,
-      authorId: _context.userId,
+      authorId: parseInt(_context.userId),
       created_at: cd.toISOString(),
       updated_at: cd.toISOString(),
       side: _args.side,
+      published: false,
+      author,
     }
   );
 
@@ -31,5 +34,5 @@ export async function createDeck(_parent, _args, _context) {
   const db = new AWS.DynamoDB.DocumentClient();
   await db.update(payload).promise();
   
-  return { id: did, side: _args.side };
+  return { id: did, side: _args.side, author };
 }

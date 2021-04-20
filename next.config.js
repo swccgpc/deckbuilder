@@ -19,6 +19,7 @@ process.env.DATABASE_URL = DATABASE_URL
 process.env.DECKS_TABLE_NAME='Decks'
 process.env.DECK_RATINGS_TABLE_NAME='DeckRatings'
 process.env.CARD_COMMENTS_TABLE_NAME='CardComments'
+process.env.DECK_COMMENTS_TABLE_NAME='DeckComments'
 
 AWS.config.update({region: aws_region });
 
