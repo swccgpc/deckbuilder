@@ -54,9 +54,9 @@ const resolvers = {
     decks,
   },
   Mutation: {
-    login,
+    login, // done
     updateDeck, // done
-    deleteDeck,
+    deleteDeck, // done
     setStartingCard, // done
     createDeck, // done
     createDeckRating, // done
@@ -88,7 +88,6 @@ const apolloServer = new ApolloServer({
   resolvers,
   context: ({ req }) => {
     try {
-      return { userId: '1234' };
       const token = req.headers.authorization.split(" ")[1];
       const decoded = jwt.verify(token, process.env.JWT_SECRET) as {
         userId: string;

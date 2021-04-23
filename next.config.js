@@ -20,6 +20,7 @@ process.env.DECKS_TABLE_NAME='Decks'
 process.env.DECK_RATINGS_TABLE_NAME='DeckRatings'
 process.env.CARD_COMMENTS_TABLE_NAME='CardComments'
 process.env.DECK_COMMENTS_TABLE_NAME='DeckComments'
+process.env.USERS_TABLE_NAME='Users'
 
 AWS.config.update({region: aws_region });
 
