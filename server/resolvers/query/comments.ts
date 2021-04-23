@@ -55,6 +55,6 @@ export function deserializeItem(item) {
     updated_at: item.updated_at?.S,
     authorId: item.authorId?.S,
     comment: item.comment?.S,
-    author: { id: item.authorId?.S, username: 'Good' },
+    author: item.author ? JSON.parse(item.author?.S) : {},
   } : null;
 }

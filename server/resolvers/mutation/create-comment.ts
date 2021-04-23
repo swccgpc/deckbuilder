@@ -1,13 +1,14 @@
 import AWS from "aws-sdk";
 
-export async function addCardComment(cardId: number, comment: string, userId: string) {
+export async function addCardComment(cardId: number, comment: string, userId: string, username: string) {
   const cd = new Date().toISOString();
   const item = {
     cardId,
     created_at: cd,
     comment: comment,
     updated_at: cd,
-    authorId: userId
+    authorId: userId,
+    author: JSON.stringify({ id: userId, username }),
   };
 
   const payload = {
@@ -22,20 +23,21 @@ export async function addCardComment(cardId: number, comment: string, userId: st
     id: cd,
     created_at: cd,
     updated_at: cd,
-    author: { id: userId, username: 'Good' },
+    author: { id: userId, username },
     comment,
     cardId
   };
 }
 
-export async function addDeckComment(deckId: string, comment: string, userId: string) {
+export async function addDeckComment(deckId: string, comment: string, userId: string, username: string) {
   const cd = new Date().toISOString();
   const item = {
     deckId,
     created_at: cd,
     comment: comment,
     updated_at: cd,
-    authorId: userId
+    authorId: userId,
+    author: JSON.stringify({ id: userId, username }),
   };
 
   const payload = {
@@ -50,7 +52,7 @@ export async function addDeckComment(deckId: string, comment: string, userId: st
     id: cd,
     created_at: cd,
     updated_at: cd,
-    author: { id: userId, username: 'Good' },
+    author: { id: userId, username },
     comment,
     deckId
   };
@@ -69,8 +71,8 @@ export async function createComment(_parent, _args, _context) {
   }
 
   if (!_args.deckId) {
-    return await addCardComment(parseInt(_args.cardId), _args.comment, _context.userId);
+    return await addCardComment(parseInt(_args.cardId), _args.comment, _context.userId, _context.username);
   } else {
-    return await addDeckComment(_args.deckId, _args.comment, _context.userId);
+    return await addDeckComment(_args.deckId, _args.comment, _context.userId, _context.username);
   }
 }

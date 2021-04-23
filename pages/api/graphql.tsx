@@ -24,8 +24,8 @@ export const prisma = new PrismaClient();
 const typeDefs = gql(schema + "");
 
 function sortCardsByName(a: any, b: any) {
-  const aTitle = a.front_title.replace(/[^0-9a-zA-z_.]/gi, "");
-  const bTitle = b.front_title.replace(/[^0-9a-zA-z_.]/gi, "");
+  const aTitle = a.front.title.replace(/[^0-9a-zA-z_.]/gi, "");
+  const bTitle = b.front.title.replace(/[^0-9a-zA-z_.]/gi, "");
 
   if (aTitle < bTitle) {
     return -1;
@@ -44,7 +44,7 @@ const resolvers = {
     // cards: async () => {
     //   return (await prisma.card.findMany()).sort(sortCardsByName);
     // },
-    cards: () => allCards(), // done
+    cards: () => allCards().sort(sortCardsByName), // done
     deck, // done
     // deck: deck, (_parent, _args) => {
     //   return prisma.deck.findOne({
@@ -88,11 +88,13 @@ const apolloServer = new ApolloServer({
   resolvers,
   context: ({ req }) => {
     try {
+      //return { userId: '12345', username: 'Imad' };
       const token = req.headers.authorization.split(" ")[1];
       const decoded = jwt.verify(token, process.env.JWT_SECRET) as {
         userId: string;
+        username: string;
       };
-      return { userId: decoded.userId || 1234 };
+      return { userId: decoded.userId, username: decoded.username };
     } catch (e) {
       console.log(e);
       return {};

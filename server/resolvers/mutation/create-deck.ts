@@ -9,7 +9,7 @@ export async function createDeck(_parent, _args, _context) {
 
   const cd = new Date();
   const did = cd.getTime();
-  const author = JSON.stringify({ id: parseInt(_context.userId), username: "Good" });
+  const author = JSON.stringify({ id: parseInt(_context.userId), username: _context.username });
   const updateExpression = DUE.getUpdateExpression(
     {
       id: `${did}`,

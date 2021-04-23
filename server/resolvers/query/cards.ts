@@ -1,5 +1,5 @@
 const darkCards = require("../../../cards/Dark.json");
-const lightCards = require("../../../cards/Dark.json");
+const lightCards = require("../../../cards/Light.json");
 
 const allCardsArray = darkCards.cards.concat(lightCards.cards);
 

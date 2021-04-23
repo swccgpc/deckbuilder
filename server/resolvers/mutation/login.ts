@@ -49,6 +49,6 @@ export async function login(_parent, _args) {
   }
 
   return {
-    jwt: jwt.sign({ userId: user.id }, process.env.JWT_SECRET),
+    jwt: jwt.sign({ userId: user.id, username: userName }, process.env.JWT_SECRET),
   };
 }
