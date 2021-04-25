@@ -16,6 +16,8 @@ export const Deck = {
       return o;
     });
   },
+  totalRating: (_parent) => _parent.total_rating,
+  totalRatingCount: (_parent) => _parent.total_rating_count,
   comments: async (_parent, _context) => {
     return await getDeckCommentsFromDb(_parent.id);
   },

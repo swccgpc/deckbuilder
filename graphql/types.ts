@@ -161,6 +161,8 @@ export type Deck = {
   title: Scalars['String'];
   published: Scalars['Boolean'];
   description: Scalars['String'];
+  totalRating: Scalars['Float'];
+  totalRatingCount: Scalars['Float'];
   author: User;
   ratings: Array<Maybe<DeckRating>>;
   deckCards: Array<Maybe<DeckCard>>;
@@ -352,7 +354,7 @@ export type GetDeckQuery = (
   { __typename?: 'Query' }
   & { deck: (
     { __typename?: 'Deck' }
-    & Pick<Deck, 'id' | 'title' | 'description' | 'createdAt' | 'updatedAt' | 'side'>
+    & Pick<Deck, 'id' | 'title' | 'description' | 'createdAt' | 'updatedAt' | 'side' | 'totalRating' | 'totalRatingCount'>
     & { ratings: Array<Maybe<(
       { __typename?: 'DeckRating' }
       & Pick<DeckRating, 'id' | 'rating'>
@@ -386,7 +388,7 @@ export type GetDecksQuery = (
   { __typename?: 'Query' }
   & { decks: Array<Maybe<(
     { __typename?: 'Deck' }
-    & Pick<Deck, 'id' | 'title' | 'createdAt' | 'published' | 'side'>
+    & Pick<Deck, 'id' | 'title' | 'createdAt' | 'published' | 'side' | 'totalRating' | 'totalRatingCount'>
     & { ratings: Array<Maybe<(
       { __typename?: 'DeckRating' }
       & Pick<DeckRating, 'id' | 'rating'>
@@ -404,7 +406,7 @@ export type GetRecentDecksQuery = (
   { __typename?: 'Query' }
   & { recentDecks: Array<Maybe<(
     { __typename?: 'Deck' }
-    & Pick<Deck, 'id' | 'side' | 'title' | 'description' | 'createdAt'>
+    & Pick<Deck, 'id' | 'side' | 'title' | 'description' | 'createdAt' | 'totalRatingCount' | 'totalRating'>
     & { author: (
       { __typename?: 'User' }
       & Pick<User, 'id' | 'username'>

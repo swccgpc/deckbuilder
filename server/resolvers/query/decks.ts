@@ -13,7 +13,7 @@ export async function deck(
   _args: RequireFields<QueryDeckArgs, "id">,
 ) {
   if (_args.id) {
-    return await getDeckFromDb(_args.id, true);
+    return await getDeckFromDb(_args.id, false);
   } else {
     return null;
   }
@@ -136,7 +136,7 @@ function deserialize(items) {
   return null;
 }
 
-export function deserializeItem(item, ratings: any[] = []) {
+export function deserializeItem(item: any, ratings: any[] = []) {
   return item ? {
     id: item.id?.S,
     side: item.side?.S,
@@ -148,6 +148,8 @@ export function deserializeItem(item, ratings: any[] = []) {
     author: item.author?.S,
     published: item.published?.BOOL || false,
     cards: item.cards ? JSON.parse(item.cards?.S) : [],
+    total_rating: item.total_rating?.N || 0,
+    total_rating_count: item.total_rating_count?.N || 0,
     ratings,
   } : null;
 }

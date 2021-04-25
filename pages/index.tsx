@@ -90,6 +90,8 @@ export default function Home() {
                     ratings={deck.ratings}
                     description={deck.description}
                     author={deck.author.username}
+                    totalRating={deck.totalRating}
+                    totalRatingCount={deck.totalRatingCount}
                     types={
                       deck.deckCards
                         .map((deckCard) => deckCard?.card.type)

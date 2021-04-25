@@ -63,6 +63,8 @@ type Deck {
   title: String!
   published: Boolean!
   description: String!
+  totalRating: Float!
+  totalRatingCount: Float!
   author: User!
   ratings: [DeckRating]!
   deckCards: [DeckCard]!

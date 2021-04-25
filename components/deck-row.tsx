@@ -115,7 +115,7 @@ export function DeckRow({
       </TitleAuthorContainer>
       <IconDaysDiv>
         <TileRatingContainer>
-          <StarsComponent ratings={deck.ratings} />
+          <StarsComponent deck={deck} ratings={deck.ratings} />
         </TileRatingContainer>
         <Days>Created {moment(deck.createdAt).from(moment(new Date()))}</Days>
       </IconDaysDiv>

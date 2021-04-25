@@ -73,6 +73,8 @@ export function DeckTile({
   createdAt,
   description,
   ratings,
+  totalRating,
+  totalRatingCount,
   types,
 }: {
   id: string;
@@ -82,6 +84,8 @@ export function DeckTile({
   createdAt: string;
   description: string;
   ratings: Maybe<{ id: string; rating: number }>[];
+  totalRating: number;
+  totalRatingCount: number;
   types: string[];
 }) {
   const router = useRouter();
@@ -113,7 +117,7 @@ export function DeckTile({
           .join(" • ")}
       </TileDeckCardTypes>
       <TileRatingContainer>
-        <StarsComponent ratings={ratings}></StarsComponent>
+        <StarsComponent deck={{ totalRating, totalRatingCount }} ratings={ratings}></StarsComponent>
       </TileRatingContainer>
     </Tile>
   );

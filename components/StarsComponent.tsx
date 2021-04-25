@@ -1,18 +1,17 @@
 import StarsRating from "stars-rating";
 import { RatingText } from "./DeckTile";
-import { average } from "../utils/utils";
 import { Maybe } from "../graphql/types";
 import { getToken } from "../utils/frontend-auth";
 export function StarsComponent({
+  deck,
   ratings,
   onChange,
 }: {
   onChange?: (rating: number) => void;
+  deck: Maybe<{ totalRating: number, totalRatingCount: number }>;
   ratings: Maybe<{ id: string; rating: number }>[];
 }) {
-  const scores = ratings
-    .map((rating) => rating?.rating)
-    .filter((rating) => rating !== null && rating !== undefined) as number[];
+  const average = deck.totalRating / deck.totalRatingCount;
   const isLoggedIn = Boolean(getToken());
   return (
     <>
@@ -21,7 +20,7 @@ export function StarsComponent({
         size={15}
         color2={"#ffd700"}
         edit={Boolean(onChange) && isLoggedIn}
-        value={average(scores)}
+        value={average}
         half={true}
         onChange={onChange}
       />

@@ -316,9 +316,10 @@ export default function Deck() {
 
               <DeckButtons>
                 <AverageDestiny>
-                  {Math.round(average(destiny) * 10) / 10} Avg Destiny
+                  {Math.round((destiny.length ? average(destiny) : 0) * 10) / 10} Avg Destiny
                 </AverageDestiny>
                 <StarsComponent
+                  deck={deckInfo.deck}
                   ratings={deckInfo.deck.ratings}
                   onChange={(rating: number) => {
                     createRating({

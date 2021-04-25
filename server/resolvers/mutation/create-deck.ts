@@ -21,6 +21,8 @@ export async function createDeck(_parent, _args, _context) {
       updated_at: cd.toISOString(),
       side: _args.side,
       published: false,
+      total_rating: 0,
+      total_rating_count: 0,
       author,
     }
   );

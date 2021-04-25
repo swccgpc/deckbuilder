@@ -1,5 +1,5 @@
 import { prisma } from "../../../pages/api/graphql";
-import { getDeckFromDb, getRatingsFromDb } from '../query/decks';
+import { getDeckFromDb } from '../query/decks';
 import AWS from "aws-sdk";
 import DUE from "dynamodb-update-expression";
 
@@ -11,12 +11,22 @@ export async function createDeckRating(_parent, _args, _context) {
     throw new Error("Only ratings between 1 and 5 are allowed");
   }
 
-  const deck = await getDeckFromDb(_args.deckId, false);
+  const userId = parseInt(_context.userId);
+
+  let tasks = [];
+  const previousRatingTask = getDeckRatingByAuthor(_args.deckId, userId);
+  const deckTask = getDeckFromDb(_args.deckId, false);
+  tasks.push(previousRatingTask);
+  tasks.push(deckTask);
+
+  await Promise.all(tasks);
+
+  const previousRating = await previousRatingTask;
+  const deck = await deckTask;
+
   if (!deck) {
     throw new Error(`deck not found: ${_args.deckId}`);
   }
-
-  const userId = parseInt(_context.userId);
 
   const cd = new Date();
   const updateExpression = DUE.getUpdateExpression(
@@ -40,11 +50,17 @@ export async function createDeckRating(_parent, _args, _context) {
     ...updateExpression,
   };
 
+  tasks = [];
   const db = new AWS.DynamoDB.DocumentClient();
-  await db.update(payload).promise();
+  tasks.push(db.update(payload).promise());
 
-  const ratings = await getRatingsFromDb(_args.deckId);
-  deck.ratings = ratings;
+  const updatedRatingsTask = updateAverageRating(db, _args.deckId, _args.rating, previousRating?.rating || 0);
+  tasks.push(updatedRatingsTask);
+
+  await Promise.all(tasks);
+
+  const updatedRatings = await updatedRatingsTask;
+  Object.assign(deck, updatedRatings);
 
   return {
     id: cd.getTime(),
@@ -52,52 +68,44 @@ export async function createDeckRating(_parent, _args, _context) {
     deckId: _args.deckId,
     deck,
   };
+}
 
-  // const previousRatings = await prisma.deckRating.findMany({
-  //   where: {
-  //     Deck: {
-  //       id: parseInt(_args.deckId),
-  //     },
-  //     User: {
-  //       id: parseInt(_context.userId),
-  //     },
-  //   },
-  // });
-  // let rating;
-  // if (previousRatings.length > 0) {
-  //   rating = await prisma.deckRating.update({
-  //     where: {
-  //       id: previousRatings[0].id as number,
-  //     },
-  //     data: {
-  //       rating: _args.rating,
-  //     },
-  //   });
-  // } else {
-  //   rating = await prisma.deckRating.create({
-  //     data: {
-  //       Deck: {
-  //         connect: {
-  //           id: parseInt(_args.deckId),
-  //         },
-  //       },
-  //       User: {
-  //         connect: {
-  //           id: parseInt(_context.userId),
-  //         },
-  //       },
-  //       rating: _args.rating,
-  //     },
-  //   });
-  // }
+async function getDeckRatingByAuthor(deckId: string, userId: number) {
+  const db = new AWS.DynamoDB.DocumentClient();
+  const payload = {
+    TableName: process.env.DECK_RATINGS_TABLE_NAME,
+    Key: {
+      'deckId': deckId,
+      'authorId': userId
+    },
+  };
 
-  // return {
-  //   ...rating,
-  //   deck: () =>
-  //     prisma.deck.findOne({
-  //       where: {
-  //         id: parseInt(_args.deckId),
-  //       },
-  //     }),
-  // };
+  const { Item } = await db.get(payload).promise();
+  if (Item) {
+    return {
+      id: Item.updated_at,
+      rating: Item.rating,
+    };
+  }
+
+  return null;
+}
+
+async function updateAverageRating(db: AWS.DynamoDB.DocumentClient,
+  deckId: string, newRating: number, oldRating: number) {
+
+  const r = newRating - oldRating;
+  var payload = {
+    TableName: process.env.DECKS_TABLE_NAME,
+    Key: { id: deckId },
+    UpdateExpression: "set total_rating = (total_rating + :val), total_rating_count = total_rating_count + :tot",
+    ExpressionAttributeValues:{
+        ":val": r,
+        ":tot": oldRating === 0 ? 1 : 0
+    },
+    ReturnValues:"UPDATED_NEW"
+  };
+
+  const { Attributes } = await db.update(payload).promise();
+  return Attributes;
 }

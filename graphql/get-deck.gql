@@ -6,6 +6,8 @@ query GetDeck($id: ID!) {
     createdAt
     updatedAt
     side
+    totalRating
+    totalRatingCount
     ratings {
       id
       rating
