@@ -1,4 +1,3 @@
-import { prisma } from "../../pages/api/graphql";
 import { Card } from "../../graphql/types";
 import { singleCardById } from './query/cards';
 

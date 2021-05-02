@@ -1,9 +1,7 @@
-import { PrismaClient } from "@prisma/client";
-import { deserializeItem, getFromDb } from './query/decks';
-import AWS from "aws-sdk";
+import { getFromDb } from './query/decks';
 
 
-export async function recentDecks(prisma: PrismaClient) {
+export async function recentDecks() {
   return getFromDb({
     IndexName: "deleted-updated_at-index",
     ExpressionAttributeNames: {

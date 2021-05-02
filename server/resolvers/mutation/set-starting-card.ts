@@ -1,4 +1,3 @@
-import { prisma } from "../../../pages/api/graphql";
 import { getDeckFromDb } from '../query/decks';
 import { updateDeckItem  } from '../mutation/update-deck';
 

@@ -1,4 +1,3 @@
-import { prisma } from "../../../pages/api/graphql";
 import { getDeckFromDb } from '../query/decks';
 import AWS from "aws-sdk";
 import DUE from "dynamodb-update-expression";

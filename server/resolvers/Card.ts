@@ -1,4 +1,3 @@
-import { prisma } from "../../pages/api/graphql";
 import { getCardCommentsFromDb } from './query/comments';
 
 export const CardResolver = {

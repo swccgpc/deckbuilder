@@ -1,4 +1,3 @@
-import { prisma } from "../../../pages/api/graphql";
 import {
   ResolversParentTypes,
   RequireFields,

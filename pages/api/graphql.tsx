@@ -1,6 +1,5 @@
 import { ApolloServer, gql } from "apollo-server-micro";
 import schema from "raw-loader!../../graphql/schema.gql";
-import { PrismaClient } from "@prisma/client";
 import { recentDecks } from "../../server/resolvers/recent-decks";
 import { allCards, singleCard } from "../../server/resolvers/query/cards";
 import jwt from "jsonwebtoken";
@@ -18,8 +17,6 @@ import { createDeckRating } from "../../server/resolvers/mutation/create-deck-ra
 import { Deck } from "../../server/resolvers/types/Deck";
 import { createComment } from "../../server/resolvers/mutation/create-comment";
 import { Comment } from "../../server/resolvers/types/Comment";
-
-export const prisma = new PrismaClient();
 
 const typeDefs = gql(schema + "");
 
@@ -39,7 +36,7 @@ function sortCardsByName(a: any, b: any) {
 const resolvers = {
   Query: {
     hello: (_parent, _args, _context) => "Hello!",
-    recentDecks: () => recentDecks(prisma), // done
+    recentDecks: () => recentDecks(), // done
     card: (_parent, _args) => singleCard(_parent, _args), // done
     // cards: async () => {
     //   return (await prisma.card.findMany()).sort(sortCardsByName);
@@ -88,7 +85,7 @@ const apolloServer = new ApolloServer({
   resolvers,
   context: ({ req }) => {
     try {
-      //return { userId: '12345', username: 'Imad' };
+      // return { userId: '12345', username: 'Imad' };
       const token = req.headers.authorization.split(" ")[1];
       const decoded = jwt.verify(token, process.env.JWT_SECRET) as {
         userId: string;

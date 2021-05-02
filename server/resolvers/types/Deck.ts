@@ -1,4 +1,3 @@
-import { prisma } from "../../../pages/api/graphql";
 import { singleCardById } from '../query/cards';
 import { getDeckCommentsFromDb } from '../query/comments';
 
