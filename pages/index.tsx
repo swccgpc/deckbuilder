@@ -64,8 +64,7 @@ export default function Home() {
       <Toolbar />
       <Content>
         <HomePageContent>
-          <HomePageTitle>Deck Builder</HomePageTitle>
-          <HomePageH2>For the Star Wars Customizable Card Game</HomePageH2>
+          <HomePageTitle>SWCCG Decks</HomePageTitle>
           <RecentTitleContainer>
             <RecentTitle>Recent decks</RecentTitle>
             {loading && <LinearProgress style={{ width: "100%" }} />}
