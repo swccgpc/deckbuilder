@@ -29,9 +29,9 @@ export async function updateDeck(
 
   return {
     id: _args.deckId,
-    title: _args.updates.title,
-    description: _args.updates.description,
-    published: _args.updates.published || deck.published,
+    title: _args.updates.title || deck.title,
+    description: _args.updates.description || deck.description,
+    published: _args.updates.published === undefined ? deck.published : _args.updates.published,
   };
 }
 

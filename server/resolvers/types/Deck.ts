@@ -11,7 +11,7 @@ export const Deck = {
   deckCards: (_parent) => {
     return _parent.cards.map(c => {
       const card = singleCardById(c.cardId);
-      const o = { ...c, ...card };
+      const o = { ...card, ...c };
       return o;
     });
   },

@@ -15,7 +15,7 @@ export async function removeCardFromDeck(_parent, _args, _context) {
         throw new Error(`deck has no cards: ${_args.deckId}`);
     }
 
-    let cards = deck.cards.filter(c => c.cardId !== parseInt(_args.deckCardId));
+    let cards = deck.cards.filter(c => c.id !== parseInt(_args.deckCardId));
     await updateDeckItem(_args.deckId, {
         cards: JSON.stringify(cards),
     });

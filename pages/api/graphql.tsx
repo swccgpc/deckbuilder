@@ -5,7 +5,7 @@ import { allCards, singleCard } from "../../server/resolvers/query/cards";
 import jwt from "jsonwebtoken";
 import { addCardToDeck } from "../../server/resolvers/mutation/add-card-to-deck";
 import { removeCardFromDeck } from "../../server/resolvers/mutation/remove-card-from-deck";
-import { CardResolver } from "../../server/resolvers/Card";
+import { CardResolver } from "../../server/resolvers/types/Card";
 import { createDeck } from "../../server/resolvers/mutation/create-deck";
 import { DeckCard } from "../../server/resolvers/DeckCard";
 import { setStartingCard } from "../../server/resolvers/mutation/set-starting-card";

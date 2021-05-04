@@ -25,10 +25,6 @@ export async function addCardToDeck(_parent, _args, _context) {
     throw new Error(`deck not found: ${_args.deckId}`);
   }
 
-  if (deck.cards.filter(c => c.cardId === cardId).length > 0) {
-    throw new Error('card is already in deck');
-  }
-
   const cd = new Date();
   const newId = cd.getTime();
   deck.cards.push({

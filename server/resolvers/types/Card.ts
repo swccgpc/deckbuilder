@@ -1,4 +1,4 @@
-import { getCardCommentsFromDb } from './query/comments';
+import { getCardCommentsFromDb } from '../query/comments';
 
 export const CardResolver = {
   id: (_parent) => _parent.id,
