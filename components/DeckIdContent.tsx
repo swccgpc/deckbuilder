@@ -1,8 +1,10 @@
 import styled from "styled-components";
 import PersonIcon from "@material-ui/icons/Person";
+import Link from "@material-ui/core/Link";
 import { groupBy } from "../utils/utils";
 import { CardTypeSection } from "../pages/deck/[id]";
 import { DeckCard } from "../graphql/types";
+import { getUserId } from '../utils/frontend-auth';
 
 const MiddleContent = styled.div`
   display: flex;
@@ -47,10 +49,14 @@ export default function DeckIdContent({
   username,
   description,
   deckCards,
+  deckId,
+  deckUserId,
 }: {
   description: string;
   username: string;
   deckCards: DeckCard[];
+  deckId: string;
+  deckUserId: string;
 }) {
   return (
     <div>
@@ -70,6 +76,7 @@ export default function DeckIdContent({
             <div>{username}</div>
           </PlayerName>
           <Description>{description}</Description>
+          { deckUserId === getUserId() ? <Link title="Edit Deck" variant="button" href={`/deck/edit/${deckId}`}>Edit Deck</Link> : null }
         </RightContent>
       </MiddleContent>
     </div>

@@ -392,6 +392,8 @@ export default function Deck() {
             username={authorUsername}
             description={deckInfo.deck.description || "No description"}
             deckCards={deckInfo.deck.deckCards as DeckCard[]}
+            deckId={deckId as string}
+            deckUserId={deckInfo.deck.author.id as string}
           ></DeckIdContent>
           <CommentsSection
             comments={deckInfo.deck.comments}
