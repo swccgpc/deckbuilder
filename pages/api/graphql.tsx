@@ -33,46 +33,34 @@ function sortCardsByName(a: any, b: any) {
   return 0;
 }
 
+async function failSafe(func) {
+  try {
+    return await func();
+  } catch (e) {
+    console.error(e);
+    throw new Error('There was error executing your request.');
+  }
+}
+
 const resolvers = {
   Query: {
     hello: (_parent, _args, _context) => "Hello!",
-    recentDecks: () => recentDecks(), // done
+    recentDecks: () => failSafe(() => recentDecks()), // done
     card: (_parent, _args) => singleCard(_parent, _args), // done
-    // cards: async () => {
-    //   return (await prisma.card.findMany()).sort(sortCardsByName);
-    // },
     cards: () => allCards().sort(sortCardsByName), // done
-    deck, // done
-    // deck: deck, (_parent, _args) => {
-    //   return prisma.deck.findOne({
-    //     where: { id: parseInt(_args.id) },
-    //   });
-    // },
-    decks,
+    deck: (_parent, _args) => failSafe(() => deck(_parent, _args)), // done
+    decks: (_parent, _args, _context) => failSafe(() => decks(_parent, _args, _context)),
   },
   Mutation: {
-    login, // done
-    updateDeck, // done
-    deleteDeck, // done
-    setStartingCard, // done
-    createDeck, // done
-    createDeckRating, // done
-    createComment, // done
-    addCardToDeck, // done
-    removeCardFromDeck, // done
-    // removeCardFromDeck: async (_parent, _args, _context) => {
-    //   if (!_context.userId) {
-    //     throw new Error("Please login");
-    //   }
-    //   await prisma.deckCard.delete({
-    //     where: {
-    //       id: parseInt(_args.deckCardId),
-    //     },
-    //   });
-    //   return {
-    //     success: true,
-    //   };
-    // },
+    login: (_parent, _args) => failSafe(() => login(_parent, _args)), // done
+    updateDeck: (_parent, _args, _context) => failSafe(() => updateDeck(_parent, _args, _context)), // done
+    deleteDeck: (_parent, _args, _context) => failSafe(() => deleteDeck(_parent, _args, _context)), // done
+    setStartingCard: (_parent, _args) => failSafe(() => setStartingCard(_parent, _args)), // done
+    createDeck: (_parent, _args, _context) => failSafe(() => createDeck(_parent, _args, _context)), // done
+    createDeckRating: (_parent, _args, _context) => failSafe(() => createDeckRating(_parent, _args, _context)), // done
+    createComment: (_parent, _args, _context) => failSafe(() => createComment(_parent, _args, _context)), // done
+    addCardToDeck: (_parent, _args, _context) => failSafe(() => addCardToDeck(_parent, _args, _context)), // done
+    removeCardFromDeck: (_parent, _args, _context) => failSafe(() => removeCardFromDeck(_parent, _args, _context)), // done
   },
   Card: CardResolver,
   Comment,
