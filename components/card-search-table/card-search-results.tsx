@@ -6,6 +6,17 @@ import SearchIcon from "@material-ui/icons/Search"
 import { CardFilters } from "./card-filters-bar";
 import { string } from "prop-types";
 import { Card as CardFromServer, Side } from "../../graphql/types";
+import sets from '../../cards/sets.json';
+
+function getSetName(setId) {
+  const set = sets.filter(s => s.id === setId);
+  if (set && set.length) {
+    const setObject = set[0];
+    return setObject.name;
+  }
+
+  return setId;
+}
 
 function CardRow({
   card,
@@ -76,7 +87,7 @@ function CardRow({
         }}
         title={card.set}
       >
-        {card.set}
+        {getSetName(card.set)}
       </div>
       {/* {onAdd ? (
         <div

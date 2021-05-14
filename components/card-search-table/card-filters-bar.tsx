@@ -14,6 +14,7 @@ import FilterListIcon from "@material-ui/icons/FilterList";
 import { orange } from "@material-ui/core/colors";
 import { FilterIcon } from "./FilterIcon";
 import { Card as CardFromServer } from "../../graphql/types";
+import sets from '../../cards/sets.json';
 
 export const lightOrange = orange[200];
 
@@ -48,6 +49,26 @@ const Input = styled.input`
     outline: none;
   }
 `;
+
+function getSetName(setId: string) {
+  const set = sets.filter(s => s.id === setId);
+  if (set && set.length) {
+    const setObject = set[0];
+    return setObject.name;
+  }
+
+  return setId;
+}
+
+function getSetId(setName: string) {
+  const set = sets.filter(s => s.name === setName);
+  if (set && set.length) {
+    const setObject = set[0];
+    return setObject.id;
+  }
+
+  return setName;
+}
 
 export function applyFilters(allCards: CardFromServer[], filters: CardFilters) {
   return allCards
@@ -162,7 +183,7 @@ export function CardFiltersBar({
 }) {
   const [openDropDown, setOpenDropDown] = useState(undefined);
   const [filterBarOpen, setFilterBarOpen] = useState(false);
-  const sets = sortAlphabetically(unique(allCards.map(({ set }) => set)));
+  const sets = sortAlphabetically(unique(allCards.map(({ set }) => set)).map(m => getSetName(m))).map(n => getSetId(n));
   const types = sortAlphabetically(unique(allCards.map(({ type }) => type)));
   const getAllOptions = (key: string) => {
     return sortAlphabetically(
@@ -267,6 +288,7 @@ export function CardFiltersBar({
             onOpen={() => setOpenDropDown(DropDownFilters.set)}
             onClose={() => setOpenDropDown(undefined)}
             onOptionChosen={optionChosen("sets")}
+            formatName={(setId: string) => getSetName(setId)}
           />
           <FilterIcon
             Icon={SupervisorAccountIcon}
