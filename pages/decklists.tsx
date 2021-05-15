@@ -24,7 +24,6 @@ const DeckFilterContainer = styled.div`
 
 const Table = styled.div`
   color: white;
-  height: 100vh;
   width: 65%;
 `;
 
