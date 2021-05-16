@@ -39,6 +39,12 @@ export interface Card {
     type: Type;
     subType: string;
     uniqueness: string;
+    hyperspeed: string;
+    defense: string;
+    ability: string;
+    armor: string;
+    landspeed: string;
+    maneuver: string;
     destiny: number;
     power: number;
     deploy: number;

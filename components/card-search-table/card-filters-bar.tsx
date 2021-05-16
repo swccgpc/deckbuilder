@@ -144,6 +144,83 @@ export function applyFilters(allCards: CardFromServer[], filters: CardFilters) {
       return card.title
         .toLowerCase()
         .includes(filters.titleFilter.toLowerCase());
+    })
+    .filter((card) => {
+      if (!filters || !filters.subType) {
+        return true;
+      }
+
+      const subType = card.subType;
+      if (subType === undefined) {
+        return false;
+      }
+      return filters.subType.includes(subType);
+    })
+    .filter((card) => {
+      if (!filters || !filters.hyperspeed) {
+        return true;
+      }
+
+      const hyperspeed = card.hyperspeed;
+      if (hyperspeed === undefined) {
+        return false;
+      }
+      return filters.hyperspeed.includes(hyperspeed);
+    })
+    .filter((card) => {
+      if (!filters || !filters.defense) {
+        return true;
+      }
+
+      const defense = card.defense;
+      if (defense === undefined) {
+        return false;
+      }
+      return filters.defense.includes(defense);
+    })
+    .filter((card) => {
+      if (!filters || !filters.ability) {
+        return true;
+      }
+
+      const ability = card.ability;
+      if (ability === undefined) {
+        return false;
+      }
+      return filters.ability.includes(ability);
+    })
+    .filter((card) => {
+      if (!filters || !filters.armor) {
+        return true;
+      }
+
+      const armor = card.armor;
+      if (armor === undefined) {
+        return false;
+      }
+      return filters.armor.includes(armor);
+    })
+    .filter((card) => {
+      if (!filters || !filters.landspeed) {
+        return true;
+      }
+
+      const landspeed = card.landspeed;
+      if (landspeed === undefined) {
+        return false;
+      }
+      return filters.landspeed.includes(landspeed);
+    })
+    .filter((card) => {
+      if (!filters || !filters.maneuver) {
+        return true;
+      }
+
+      const maneuver = card.maneuver;
+      if (maneuver === undefined) {
+        return false;
+      }
+      return filters.maneuver.includes(maneuver);
     });
 }
 
@@ -155,6 +232,13 @@ enum DropDownFilters {
   power = "power",
   deploy = "deploy",
   forfeit = "forfeit",
+  subType = "subType",
+  defense = "defense",
+  hyperspeed = "hyperspeed",
+  ability = "ability",
+  armor = "armor",
+  landspeed = "landspeed",
+  maneuver = "maneuver",
 }
 
 export const DEFAULT_OPTION = "All";
@@ -168,6 +252,13 @@ export interface CardFilters {
   power?: string[];
   deploy?: string[];
   forfeit?: string[];
+  subType?: string[];
+  defense?: string[];
+  hyperspeed?: string[];
+  ability?: string[];
+  armor?: string[];
+  landspeed?: string[];
+  maneuver?: string[];
 }
 
 export function CardFiltersBar({
@@ -199,6 +290,13 @@ export function CardFiltersBar({
   const powerOptions = getAllOptions("power");
   const deployOptions = getAllOptions("deploy");
   const forfeitOptions = getAllOptions("forfeit");
+  const subTypeOptions = getAllOptions("subType");
+  const defenseOptions = getAllOptions("defense");
+  const hyperSpeedOptions = getAllOptions("hyperspeed");
+  const abilityOptions = getAllOptions("ability");
+  const armorOptions = getAllOptions("armor");
+  const landspeedOptions = getAllOptions("landspeed");
+  const maneuverOptions = getAllOptions("maneuver");
   const optionChosen = (filterKey: string) => (newOption: string) => {
     if (newOption === DEFAULT_OPTION) {
       onUpdateFilters({
@@ -263,7 +361,7 @@ export function CardFiltersBar({
           style={{
             display: "flex",
             marginTop: "10px",
-            justifyContent: "space-between",
+            flexWrap: 'wrap',
           }}
         >
           {showSideFilter ? (
@@ -340,6 +438,77 @@ export function CardFiltersBar({
             onClose={() => setOpenDropDown(undefined)}
             onOptionChosen={optionChosen("forfeit")}
           />
+          <FilterIcon
+            Icon={FlagIcon}
+            name={"Subtype:"}
+            active={filters && filters.subType}
+            options={subTypeOptions}
+            open={openDropDown === DropDownFilters.subType}
+            onOpen={() => setOpenDropDown(DropDownFilters.subType)}
+            onClose={() => setOpenDropDown(undefined)}
+            onOptionChosen={optionChosen("subType")}
+          />
+          <FilterIcon
+            Icon={FlagIcon}
+            name={"Defense:"}
+            active={filters && filters.defense}
+            options={defenseOptions}
+            open={openDropDown === DropDownFilters.defense}
+            onOpen={() => setOpenDropDown(DropDownFilters.defense)}
+            onClose={() => setOpenDropDown(undefined)}
+            onOptionChosen={optionChosen("defense")}
+          />
+          <FilterIcon
+            Icon={FlagIcon}
+            name={"Hyperspeed:"}
+            active={filters && filters.hyperspeed}
+            options={hyperSpeedOptions}
+            open={openDropDown === DropDownFilters.hyperspeed}
+            onOpen={() => setOpenDropDown(DropDownFilters.hyperspeed)}
+            onClose={() => setOpenDropDown(undefined)}
+            onOptionChosen={optionChosen("hyperspeed")}
+          />
+          <FilterIcon
+            Icon={FlagIcon}
+            name={"Ability:"}
+            active={filters && filters.ability}
+            options={abilityOptions}
+            open={openDropDown === DropDownFilters.ability}
+            onOpen={() => setOpenDropDown(DropDownFilters.ability)}
+            onClose={() => setOpenDropDown(undefined)}
+            onOptionChosen={optionChosen("ability")}
+          />
+          <FilterIcon
+            Icon={FlagIcon}
+            name={"Armor:"}
+            active={filters && filters.armor}
+            options={armorOptions}
+            open={openDropDown === DropDownFilters.armor}
+            onOpen={() => setOpenDropDown(DropDownFilters.armor)}
+            onClose={() => setOpenDropDown(undefined)}
+            onOptionChosen={optionChosen("armor")}
+          />
+          <FilterIcon
+            Icon={FlagIcon}
+            name={"Landspeed:"}
+            active={filters && filters.landspeed}
+            options={landspeedOptions}
+            open={openDropDown === DropDownFilters.landspeed}
+            onOpen={() => setOpenDropDown(DropDownFilters.landspeed)}
+            onClose={() => setOpenDropDown(undefined)}
+            onOptionChosen={optionChosen("landspeed")}
+          />
+          <FilterIcon
+            Icon={FlagIcon}
+            name={"Maneuver:"}
+            active={filters && filters.maneuver}
+            options={maneuverOptions}
+            open={openDropDown === DropDownFilters.maneuver}
+            onOpen={() => setOpenDropDown(DropDownFilters.maneuver)}
+            onClose={() => setOpenDropDown(undefined)}
+            onOptionChosen={optionChosen("maneuver")}
+          />
+
         </div>
       ) : null}
     </CardFilterBarContainer>

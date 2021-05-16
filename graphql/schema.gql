@@ -94,6 +94,12 @@ type Card {
   power: String
   deploy: String
   forfeit: String
+  hyperspeed: String
+  defense: String
+  ability: String
+  armor: String
+  landspeed: String
+  maneuver: String
   gametext: String
   lore: String
   gemp_card_id: String

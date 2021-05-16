@@ -36,6 +36,7 @@ function createCards(prisma: PrismaClient, allCards: Card[]) {
           front_forfeit: mapToString(card.front.forfeit),
           front_gametext: card.front.gametext,
           front_lore: card.front.lore,
+          front_hyperspeed: card.front.hyperspeed,
           counterpart: card.counterpart,
           gemp_card_id:
             gempMapping[card.id] && gempMapping[card.id].gemp_card_id,

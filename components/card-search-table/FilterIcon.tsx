@@ -44,7 +44,7 @@ const FilterIconContainer = styled.div<{ isFiltered: boolean }>`
   padding: 2px 0px;
   padding-right: 10px;
   justify-content: center;
-  margin-right: 10px;
+  margin: 5px;
 `;
 
 export function FilterIcon({

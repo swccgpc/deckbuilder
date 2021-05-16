@@ -191,6 +191,12 @@ export type Card = {
   type: Scalars['String'];
   imageUrl: Scalars['String'];
   subType?: Maybe<Scalars['String']>;
+  defense?: Maybe<Scalars['String']>;
+  hyperspeed?: Maybe<Scalars['String']>;
+  ability?: Maybe<Scalars['String']>;
+  armor?: Maybe<Scalars['String']>;
+  landspeed?: Maybe<Scalars['String']>;
+  maneuver?: Maybe<Scalars['String']>;
   destiny?: Maybe<Scalars['String']>;
   power?: Maybe<Scalars['String']>;
   deploy?: Maybe<Scalars['String']>;
@@ -341,7 +347,7 @@ export type GetCardsQuery = (
   { __typename?: 'Query' }
   & { cards: Array<Maybe<(
     { __typename?: 'Card' }
-    & Pick<Card, 'id' | 'type' | 'cardId' | 'deploy' | 'destiny' | 'forfeit' | 'gametext' | 'imageUrl' | 'lore' | 'power' | 'rarity' | 'set' | 'side' | 'subType' | 'title' | 'gemp_card_id'>
+    & Pick<Card, 'id' | 'type' | 'cardId' | 'deploy' | 'destiny' | 'forfeit' | 'gametext' | 'imageUrl' | 'lore' | 'power' | 'rarity' | 'hyperspeed' | 'defense' | 'ability' | 'armor' | 'landspeed' | 'maneuver' | 'set' | 'side' | 'subType' | 'title' | 'gemp_card_id'>
   )>> }
 );
 
@@ -373,7 +379,7 @@ export type GetDeckQuery = (
       & Pick<DeckCard, 'id' | 'createdAt' | 'isInSideDeck' | 'isStartingCard'>
       & { card: (
         { __typename?: 'Card' }
-        & Pick<Card, 'id' | 'cardId' | 'side' | 'rarity' | 'set' | 'title' | 'type' | 'imageUrl' | 'subType' | 'destiny' | 'power' | 'deploy' | 'forfeit' | 'gametext' | 'lore' | 'gemp_card_id'>
+        & Pick<Card, 'id' | 'cardId' | 'side' | 'rarity' | 'hyperspeed' | 'defense' | 'ability' | 'armor' | 'landspeed' | 'maneuver' | 'set' | 'title' | 'type' | 'imageUrl' | 'subType' | 'destiny' | 'power' | 'deploy' | 'forfeit' | 'gametext' | 'lore' | 'gemp_card_id'>
       ) }
     )>> }
   ) }
@@ -696,6 +702,12 @@ export type CardResolvers<ContextType = any, ParentType extends ResolversParentT
   cardId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   side?: Resolver<ResolversTypes['Side'], ParentType, ContextType>;
   rarity?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  hyperspeed?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  defense?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  ability?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  armor?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  landspeed?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  maneuver?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   set?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   title?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   type?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
