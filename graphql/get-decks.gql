@@ -5,6 +5,8 @@ query GetDecks($authorId: ID) {
     createdAt
     published
     side
+    totalRating
+    totalRatingCount
     ratings {
       id
       rating

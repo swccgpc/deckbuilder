@@ -44,7 +44,7 @@ const FilterIconContainer = styled.div<{ isFiltered: boolean }>`
   padding: 2px 0px;
   padding-right: 10px;
   justify-content: center;
-  margin-right: 10px;
+  margin: 5px;
 `;
 
 export function FilterIcon({
@@ -56,6 +56,7 @@ export function FilterIcon({
   onOptionChosen,
   onOpen,
   onClose,
+  formatName,
 }: {
   open: boolean;
   name: string;
@@ -65,6 +66,7 @@ export function FilterIcon({
   onOpen: () => void;
   onClose: () => void;
   onOptionChosen: (option: string) => void;
+  formatName?: (option: string) => string;
 }) {
   const isChecked = (option) => {
     if (option === DEFAULT_OPTION && active === undefined) {
@@ -118,7 +120,7 @@ export function FilterIcon({
                   style={{ color: "white" }}
                   checked={isChecked(option)}
                 />
-                <div>{option}</div>
+                <div>{formatName ? formatName(option) : option}</div>
               </div>
             ))}
           </FilterOptionsContainer>

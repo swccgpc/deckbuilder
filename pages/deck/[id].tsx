@@ -316,9 +316,10 @@ export default function Deck() {
 
               <DeckButtons>
                 <AverageDestiny>
-                  {Math.round(average(destiny) * 10) / 10} Avg Destiny
+                  {Math.round((destiny.length ? average(destiny) : 0) * 10) / 10} Avg Destiny
                 </AverageDestiny>
                 <StarsComponent
+                  deck={deckInfo.deck}
                   ratings={deckInfo.deck.ratings}
                   onChange={(rating: number) => {
                     createRating({
@@ -391,6 +392,8 @@ export default function Deck() {
             username={authorUsername}
             description={deckInfo.deck.description || "No description"}
             deckCards={deckInfo.deck.deckCards as DeckCard[]}
+            deckId={deckId as string}
+            deckUserId={deckInfo.deck.author.id as string}
           ></DeckIdContent>
           <CommentsSection
             comments={deckInfo.deck.comments}

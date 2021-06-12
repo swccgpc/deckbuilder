@@ -91,11 +91,13 @@ export type MutationAddCardToDeckArgs = {
 
 
 export type MutationRemoveCardFromDeckArgs = {
+  deckId: Scalars['String'];
   deckCardId: Scalars['ID'];
 };
 
 
 export type MutationSetStartingCardArgs = {
+  deckId: Scalars['String'];
   deckCardId: Scalars['ID'];
   isStartingCard: Scalars['Boolean'];
 };
@@ -159,6 +161,8 @@ export type Deck = {
   title: Scalars['String'];
   published: Scalars['Boolean'];
   description: Scalars['String'];
+  totalRating: Scalars['Float'];
+  totalRatingCount: Scalars['Float'];
   author: User;
   ratings: Array<Maybe<DeckRating>>;
   deckCards: Array<Maybe<DeckCard>>;
@@ -187,6 +191,12 @@ export type Card = {
   type: Scalars['String'];
   imageUrl: Scalars['String'];
   subType?: Maybe<Scalars['String']>;
+  defense?: Maybe<Scalars['String']>;
+  hyperspeed?: Maybe<Scalars['String']>;
+  ability?: Maybe<Scalars['String']>;
+  armor?: Maybe<Scalars['String']>;
+  landspeed?: Maybe<Scalars['String']>;
+  maneuver?: Maybe<Scalars['String']>;
   destiny?: Maybe<Scalars['String']>;
   power?: Maybe<Scalars['String']>;
   deploy?: Maybe<Scalars['String']>;
@@ -337,7 +347,7 @@ export type GetCardsQuery = (
   { __typename?: 'Query' }
   & { cards: Array<Maybe<(
     { __typename?: 'Card' }
-    & Pick<Card, 'id' | 'type' | 'cardId' | 'deploy' | 'destiny' | 'forfeit' | 'gametext' | 'imageUrl' | 'lore' | 'power' | 'rarity' | 'set' | 'side' | 'subType' | 'title' | 'gemp_card_id'>
+    & Pick<Card, 'id' | 'type' | 'cardId' | 'deploy' | 'destiny' | 'forfeit' | 'gametext' | 'imageUrl' | 'lore' | 'power' | 'rarity' | 'hyperspeed' | 'defense' | 'ability' | 'armor' | 'landspeed' | 'maneuver' | 'set' | 'side' | 'subType' | 'title' | 'gemp_card_id'>
   )>> }
 );
 
@@ -350,7 +360,7 @@ export type GetDeckQuery = (
   { __typename?: 'Query' }
   & { deck: (
     { __typename?: 'Deck' }
-    & Pick<Deck, 'id' | 'title' | 'description' | 'createdAt' | 'updatedAt' | 'side'>
+    & Pick<Deck, 'id' | 'title' | 'description' | 'createdAt' | 'updatedAt' | 'side' | 'totalRating' | 'totalRatingCount'>
     & { ratings: Array<Maybe<(
       { __typename?: 'DeckRating' }
       & Pick<DeckRating, 'id' | 'rating'>
@@ -369,7 +379,7 @@ export type GetDeckQuery = (
       & Pick<DeckCard, 'id' | 'createdAt' | 'isInSideDeck' | 'isStartingCard'>
       & { card: (
         { __typename?: 'Card' }
-        & Pick<Card, 'id' | 'cardId' | 'side' | 'rarity' | 'set' | 'title' | 'type' | 'imageUrl' | 'subType' | 'destiny' | 'power' | 'deploy' | 'forfeit' | 'gametext' | 'lore' | 'gemp_card_id'>
+        & Pick<Card, 'id' | 'cardId' | 'side' | 'rarity' | 'hyperspeed' | 'defense' | 'ability' | 'armor' | 'landspeed' | 'maneuver' | 'set' | 'title' | 'type' | 'imageUrl' | 'subType' | 'destiny' | 'power' | 'deploy' | 'forfeit' | 'gametext' | 'lore' | 'gemp_card_id'>
       ) }
     )>> }
   ) }
@@ -384,7 +394,7 @@ export type GetDecksQuery = (
   { __typename?: 'Query' }
   & { decks: Array<Maybe<(
     { __typename?: 'Deck' }
-    & Pick<Deck, 'id' | 'title' | 'createdAt' | 'published' | 'side'>
+    & Pick<Deck, 'id' | 'title' | 'createdAt' | 'published' | 'side' | 'totalRating' | 'totalRatingCount'>
     & { ratings: Array<Maybe<(
       { __typename?: 'DeckRating' }
       & Pick<DeckRating, 'id' | 'rating'>
@@ -402,7 +412,7 @@ export type GetRecentDecksQuery = (
   { __typename?: 'Query' }
   & { recentDecks: Array<Maybe<(
     { __typename?: 'Deck' }
-    & Pick<Deck, 'id' | 'side' | 'title' | 'description' | 'createdAt'>
+    & Pick<Deck, 'id' | 'side' | 'title' | 'description' | 'createdAt' | 'totalRatingCount' | 'totalRating'>
     & { author: (
       { __typename?: 'User' }
       & Pick<User, 'id' | 'username'>
@@ -434,6 +444,7 @@ export type LoginMutation = (
 );
 
 export type RemoveCardFromDeckMutationVariables = Exact<{
+  deckId: Scalars['String'];
   deckCardId: Scalars['ID'];
 }>;
 
@@ -447,6 +458,7 @@ export type RemoveCardFromDeckMutation = (
 );
 
 export type SetStartingCardMutationVariables = Exact<{
+  deckId: Scalars['String'];
   deckCardId: Scalars['ID'];
   isStartingCard: Scalars['Boolean'];
 }>;
@@ -627,8 +639,8 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   createDeck?: Resolver<ResolversTypes['Deck'], ParentType, ContextType, RequireFields<MutationCreateDeckArgs, 'side'>>;
   login?: Resolver<ResolversTypes['LoginResponse'], ParentType, ContextType, RequireFields<MutationLoginArgs, 'awsJWTToken'>>;
   addCardToDeck?: Resolver<ResolversTypes['DeckCardIDResponse'], ParentType, ContextType, RequireFields<MutationAddCardToDeckArgs, 'deckId' | 'cardId'>>;
-  removeCardFromDeck?: Resolver<ResolversTypes['SuccessResponse'], ParentType, ContextType, RequireFields<MutationRemoveCardFromDeckArgs, 'deckCardId'>>;
-  setStartingCard?: Resolver<ResolversTypes['DeckCard'], ParentType, ContextType, RequireFields<MutationSetStartingCardArgs, 'deckCardId' | 'isStartingCard'>>;
+  removeCardFromDeck?: Resolver<ResolversTypes['SuccessResponse'], ParentType, ContextType, RequireFields<MutationRemoveCardFromDeckArgs, 'deckId' | 'deckCardId'>>;
+  setStartingCard?: Resolver<ResolversTypes['DeckCard'], ParentType, ContextType, RequireFields<MutationSetStartingCardArgs, 'deckId' | 'deckCardId' | 'isStartingCard'>>;
   updateDeck?: Resolver<ResolversTypes['Deck'], ParentType, ContextType, RequireFields<MutationUpdateDeckArgs, 'deckId' | 'updates'>>;
   createDeckRating?: Resolver<ResolversTypes['DeckRating'], ParentType, ContextType, RequireFields<MutationCreateDeckRatingArgs, 'deckId' | 'rating'>>;
   createComment?: Resolver<ResolversTypes['Comment'], ParentType, ContextType, RequireFields<MutationCreateCommentArgs, 'comment'>>;
@@ -690,6 +702,12 @@ export type CardResolvers<ContextType = any, ParentType extends ResolversParentT
   cardId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   side?: Resolver<ResolversTypes['Side'], ParentType, ContextType>;
   rarity?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  hyperspeed?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  defense?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  ability?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  armor?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  landspeed?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  maneuver?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   set?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   title?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   type?: Resolver<ResolversTypes['String'], ParentType, ContextType>;

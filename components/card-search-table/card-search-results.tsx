@@ -2,9 +2,21 @@ import { useState } from "react";
 import Link from "next/link";
 import { CSSProperties } from "@material-ui/core/styles/withStyles";
 import AddIcon from "@material-ui/icons/Add";
+import SearchIcon from "@material-ui/icons/Search"
 import { CardFilters } from "./card-filters-bar";
 import { string } from "prop-types";
 import { Card as CardFromServer, Side } from "../../graphql/types";
+import sets from '../../cards/sets.json';
+
+function getSetName(setId) {
+  const set = sets.filter(s => s.id === setId);
+  if (set && set.length) {
+    const setObject = set[0];
+    return setObject.name;
+  }
+
+  return setId;
+}
 
 function CardRow({
   card,
@@ -30,16 +42,29 @@ function CardRow({
         backgroundColor: rowColor,
       }}
     >
+      {onAdd ? (
+        <div>
+          <AddIcon onClick={onAdd} style={{ cursor: "pointer" }} />
+        </div>
+      ) : null}
       <div style={{ flex: 40, alignItems: "center", display: "flex" }}>
         <a
-          href={`/card/${card.id}`}
-          target={newTab}
+          onClick={onAdd}
           onMouseEnter={onMouseOver}
           onMouseOut={onMouseOut}
-          style={{ marginLeft: "10px" }}
+          style={{ marginLeft: "10px", cursor: "pointer" }}
         >
           {card.title}
         </a>
+        <div>
+          <a
+            style={{ color: 'black' }}
+            href={`/card/${card.id}`}
+            target={newTab}          
+          >
+            <SearchIcon />
+          </a>
+        </div>
       </div>
       {showSideColumn ? <div style={{ flex: 10 }}>{card.side}</div> : null}
       <div
@@ -62,9 +87,9 @@ function CardRow({
         }}
         title={card.set}
       >
-        {card.set}
+        {getSetName(card.set)}
       </div>
-      {onAdd ? (
+      {/* {onAdd ? (
         <div
           style={{
             display: "flex",
@@ -75,7 +100,7 @@ function CardRow({
         >
           <AddIcon onClick={onAdd} style={{ cursor: "pointer" }} />
         </div>
-      ) : null}
+      ) : null} */}
     </div>
   );
 }
@@ -173,10 +198,11 @@ export function CardSearchResults({
       <CardHover {...cardHover} />
 
       <div style={{ display: "flex" }}>
+        <div style={{ fontWeight: "bold", flex: 3 }}></div>
         <div
           style={{
             fontWeight: "bold",
-            flex: 40,
+            flex: 43,
             display: "flex",
             alignItems: "center",
           }}

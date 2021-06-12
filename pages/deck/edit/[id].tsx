@@ -147,6 +147,7 @@ export default function EditDeck() {
     setLoading(true);
     removeCardFromDeck({
       variables: {
+        deckId: deckId as string,
         deckCardId: cardToRemove.id,
       },
     }).then(() => {

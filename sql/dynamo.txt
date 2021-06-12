@@ -1,0 +1,5 @@
+Users { username: string }
+DeckComments { deckId: string, created_at: string }
+CardComments { cardId: number, created_at: string }
+DeckRatings { deckId: string, authorId: number }
+Decks { id: string } GSI: { deleted-updated_at-index: { deleted: number, updated_at: string }, authorId-updated_at-index: { authorId: number, updated_at: string } }

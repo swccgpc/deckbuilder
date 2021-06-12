@@ -4,6 +4,8 @@ mutation CreateDeckRating($deckId: ID!, $rating: Float!) {
     rating
     deck {
       id
+      totalRating
+      totalRatingCount
       ratings {
         id
         rating

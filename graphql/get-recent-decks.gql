@@ -3,6 +3,8 @@ query GetRecentDecks {
     id
     side
     title
+    totalRating
+    totalRatingCount
     description
     author {
       id

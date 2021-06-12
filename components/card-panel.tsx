@@ -161,7 +161,7 @@ export function CardPanel({
               <div style={{ height: "3px" }}></div>
             )}
             <DeckBuilderHeader>
-              <img src="https://res.starwarsccg.org/deckdb/dark.png" style={{ height: "50px" }}></img>
+              <img src={`https://res.starwarsccg.org/deckdb/${deck.side.toLowerCase()}.png`} style={{ height: "50px" }}></img>
 
               <DeckBuilderTitle>
                 <span
@@ -230,6 +230,7 @@ export function CardPanel({
                           }
                           setStartingCard({
                             variables: {
+                              deckId: deck.id,
                               deckCardId: deckCard.id,
                               isStartingCard: !Boolean(deckCard.isStartingCard),
                             },
