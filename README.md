@@ -1,41 +1,13 @@
-SWCCG Deck Builder
+SWCCG Decks
 ==================
 
 ## Prerequisites
 
-* [NodeJS 12 LTS](https://nodejs.org/en/)
+* [NodeJS 14 LTS](https://nodejs.org/en/)
 * yarn
-* MySQL Server
+* DynamoDB
 
 
-
-## Setup MySQL
-
-### Create Database
-
-```sql
-CREATE DATABASE deckdb;
-```
-
-### Load the database schema
-
-```bash
-mysql --user=root -p deckdb < sql/schema.sql
-```
-
-### populate environment: `DATABASE_URL`
-
-* The deckdb requires the `DATABASE_URL` environment variable.
-* The variable can be set via URI in the environment:
-```bash
-export DATABASE_URL="mysql://username:password@hostname:3306/deckdb"
-```
-* Or the variable can be set in the **prisma env file**: `prisma/.env`
-```bash
-DATABASE_URL="mysql://username:password@hostname:3306/deckdb"
-```
-
-* In prouction, the `DATABASE_URL` is set in `next.config.js` from data retrieved from **Secrets Manager**.
 
 
 
@@ -70,26 +42,6 @@ npx next start
 
 
 
-## [Prisma Database Access SDK for MySQL](https://www.prisma.io/docs/getting-started/setup-prisma/start-from-scratch-sql-typescript-mysql) is used for accessing the deckdb Database in an ORM fashion.
-
-
-### Convert DB Schema in to a Prisma Data Model
-
-* After _introspecting_ the database, there will be a data model file `prisma/schema.prisma` which represents the current database schema.
-
-```bash
-npx prisma introspect
-```
-
-### Generate Prisma Client library
-
-* Read the Prisma schema and generate a Prisma Client library into `node_modules/@prisma/client`
-
-```bash
-npx prisma generate
-```
-
-
 
 ## User Authentication using Cognito
 
@@ -110,6 +62,7 @@ npx prisma generate
 ```bash
 npx next start --port=8080
 ```
+
 
 
 
