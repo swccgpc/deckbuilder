@@ -7,6 +7,9 @@ import {
   CreateCommentMutationVariables,
 } from "../graphql/types";
 import { gql, useMutation } from "@apollo/client";
+import MDEditor from '@uiw/react-md-editor';
+import '@uiw/react-md-editor/dist/markdown-editor.css'
+import '@uiw/react-markdown-preview/dist/markdown.css';
 
 function Comment({
   author,
@@ -46,7 +49,7 @@ function Comment({
           </div>
         </div>
 
-        <div>{text}</div>
+        <div><MDEditor.Markdown source={text} /></div>
       </div>
     </div>
   );
@@ -72,13 +75,15 @@ export function CommentsSection({
   cardId?: string;
 }) {
   const [textAreaRef, setTextAreaRef]: [
-    HTMLTextAreaElement,
-    (ref: HTMLTextAreaElement) => void
+    any,
+    (ref: any) => void
   ] = useState(undefined);
   const [createComment] = useMutation<
     CreateCommentMutation,
     CreateCommentMutationVariables
   >(gql(CreateComment));
+
+  const [newComment, setNewComment] = useState('');
 
   return (
     <div>
@@ -101,7 +106,7 @@ export function CommentsSection({
           createdAt={new Date(createdAt)}
         ></Comment>
       ))}
-      <textarea
+      {/* <textarea
         style={{
           borderRadius: "5px",
           height: "100px",
@@ -110,7 +115,8 @@ export function CommentsSection({
           marginBottom: "5px",
         }}
         ref={(ref) => setTextAreaRef(ref)}
-      ></textarea>
+      ></textarea> */}
+      <MDEditor value={newComment} onChange={(val) => setNewComment(val)} />
       <Button
         variant="outlined"
         style={{
@@ -123,11 +129,11 @@ export function CommentsSection({
         onClick={() => {
           createComment({
             variables: {
-              comment: textAreaRef.value,
+              comment: newComment,
               ...(deckId ? { deckId } : { cardId }),
             },
           });
-          textAreaRef.value = "";
+          setNewComment('');
         }}
       >
         <div>Add Reply</div>

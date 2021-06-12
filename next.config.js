@@ -1,4 +1,5 @@
 
+const removeImports = require('next-remove-imports')();
 
 
 var aws_region        = process.env.AWS_DEFULT_REGION || 'us-east-2'
@@ -51,7 +52,7 @@ AWS.config.update({region: aws_region });
 
 
 
-module.exports = {
+module.exports = removeImports({
   serverRuntimeConfig: {
 
     //
@@ -105,7 +106,7 @@ module.exports = {
     COGNITO_LOGON_URL: COGNITO_LOGON_URL,
 
   }
-};
+});
 
 console.log("COGNITO_LOGON_URL: " + module.exports.serverRuntimeConfig.COGNITO_LOGON_URL);
 console.log("COGNITO_POOL_ID..: " + module.exports.serverRuntimeConfig.COGNITO_POOL_ID);
