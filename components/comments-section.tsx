@@ -6,6 +6,7 @@ import {
   CreateCommentMutation,
   CreateCommentMutationVariables,
 } from "../graphql/types";
+import { getToken, getSignInUrl } from "../utils/frontend-auth";
 import { gql, useMutation } from "@apollo/client";
 import MDEditor from '@uiw/react-md-editor';
 import '@uiw/react-md-editor/dist/markdown-editor.css'
@@ -65,6 +66,29 @@ type CommentI = {
   };
 };
 
+function checkLoggedIn() {
+  try {
+    if (!getToken()) {
+      return (
+      <div style={{ marginBottom: "20px" }}>
+        <div style={{ marginRight: "20px" }}>
+          You must be logged in to post a comment
+        </div>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => (window.location.href = getSignInUrl())}
+        >
+          Login
+        </Button>
+      </div>
+    );
+    }
+  } catch (e) { }
+
+  return null;
+} 
+
 export function CommentsSection({
   comments,
   deckId,
@@ -115,29 +139,35 @@ export function CommentsSection({
           marginBottom: "5px",
         }}
         ref={(ref) => setTextAreaRef(ref)}
-      ></textarea> */}
-      <MDEditor value={newComment} onChange={(val) => setNewComment(val)} />
-      <Button
-        variant="outlined"
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          color: "black",
-          marginBottom: "10px",
-        }}
-        onClick={() => {
-          createComment({
-            variables: {
-              comment: newComment,
-              ...(deckId ? { deckId } : { cardId }),
-            },
-          });
-          setNewComment('');
-        }}
-      >
-        <div>Add Reply</div>
-      </Button>
+      ></textarea> */}      
+      { checkLoggedIn() }
+
+      { getToken() ?
+      <div>
+        <MDEditor value={newComment} onChange={(val) => setNewComment(val)} />
+        <Button
+          variant="outlined"
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            color: "black",
+            marginBottom: "10px",
+          }}
+          onClick={() => {
+            createComment({
+              variables: {
+                comment: newComment,
+                ...(deckId ? { deckId } : { cardId }),
+              },
+            });
+            setNewComment('');
+          }}
+        >
+          <div>Add Reply</div>
+        </Button>
+      </div>
+      : null }
     </div>
   );
 }
