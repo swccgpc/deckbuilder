@@ -144,7 +144,7 @@ export function CommentsSection({
 
       { getToken() ?
       <div>
-        <MDEditor value={newComment} onChange={(val) => setNewComment(val)} />
+        <MDEditor style={{ minWidth: '400px' }} value={newComment} onChange={(val) => setNewComment(val)} />
         <Button
           variant="outlined"
           style={{
