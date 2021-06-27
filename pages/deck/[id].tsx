@@ -115,6 +115,7 @@ const TypeContainer = styled.div`
   flex: wrap;
   color: black;
   width: 50%;
+  min-width: 140px;
 `;
 
 const TypeTitle = styled.div`
